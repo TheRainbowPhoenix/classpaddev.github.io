@@ -582,13 +582,44 @@
             align-self: flex-start;
         }
 
-        .htu-left img {
-            max-width: 100%;
-            height: auto;
+        .htu-device-wrapper {
+            position: relative;
             width: 350px;
+            max-width: 100%;
+            margin-top: 18%;
+        }
+
+        .htu-device-wrapper>img#htu-img {
+            width: 100%;
+            height: auto;
             filter: drop-shadow(0 20px 30px rgba(0, 0, 0, 0.5));
             border-radius: 12px;
-            margin-top: 18%;
+            display: block;
+        }
+
+        .htu-overlay {
+            position: absolute;
+            top: 7.25%;
+            left: 12.5%;
+            width: 75%;
+            aspect-ratio: 320 / 528;
+            border-radius: 4px;
+            overflow: hidden;
+        }
+
+        .htu-overlay img {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            opacity: 0;
+            transition: opacity 0.5s ease-in-out;
+        }
+
+        .htu-overlay img.active {
+            opacity: 1;
         }
 
         .htu-right {
@@ -1296,9 +1327,16 @@
     <section id="how-to-use" class="htu-container">
         <div class="htu-split container">
             <div class="htu-left">
-                <img id="htu-img" src="https://classpaddev.github.io/img/cp.svg" alt="Classpad Instruction Graphic" />
-                <div class="htu-overlay">
-                    <img id="htu-step" src="/img/step1_system.png" alt="Step 1 System" />
+                <div class="htu-device-wrapper">
+                    <img id="htu-img" src="https://classpaddev.github.io/img/cp.svg"
+                        alt="Classpad Instruction Graphic" />
+                    <div class="htu-overlay">
+                        <img id="htu-step1" class="active" src="/img/step1_system.png" alt="Step 1 System" />
+                        <img id="htu-step2" src="/img/step2_launcher.png" alt="Step 2 Launcher" />
+                        <img id="htu-step3" src="/img/step3_yal.png" alt="Step 3 App" />
+                        <img id="htu-step4" src="/img/step4_run.png" alt="Step 4 Run"
+                            onerror="this.src='/img/step3_yal.png'" />
+                    </div>
                 </div>
             </div>
             <div class="htu-right">
@@ -2058,15 +2096,62 @@
 
         // 8. Horizontal Scroll for App Gallery
         setTimeout(() => {
-            // "How To Use" Image hover effect (replacing scroll scroll)
+            // "How To Use" Image entrance
             const htuImg = document.getElementById("htu-img");
             if (htuImg) {
-                // Just a subtle entrance or hover if needed. We don't need the motion loop anymore
                 inView(htuImg, () => {
                     htuImg.style.transform = "scale(1)";
-                    htuImg.style.backgroundColor = "transparent";
                 });
             }
+
+            // Slideshow logic for How To Use based on scroll
+            const htuSteps = document.querySelectorAll('#how-to-use .step');
+            const overlayImgs = document.querySelectorAll('.htu-overlay img');
+            let slideIndex = 0;
+            let autoSlideInterval = null;
+            let isUserScrolling = false;
+            let scrollTimeout = null;
+
+            const showSlide = (index) => {
+                overlayImgs.forEach(img => img.classList.remove('active'));
+                const targetImg = overlayImgs[index % overlayImgs.length];
+                if (targetImg) {
+                    targetImg.classList.add('active');
+                }
+            };
+
+            const startAutoSlide = () => {
+                if (autoSlideInterval) clearInterval(autoSlideInterval);
+                autoSlideInterval = setInterval(() => {
+                    if (!isUserScrolling) {
+                        slideIndex++;
+                        showSlide(slideIndex);
+
+                        // Check if we just showed the last slide in the set
+                        if ((slideIndex + 1) % overlayImgs.length === 0) {
+                            clearInterval(autoSlideInterval);
+                            setTimeout(startAutoSlide, 10000); // 10s pause after full loop
+                        }
+                    }
+                }, 2000); // 2s per slide
+            };
+
+            htuSteps.forEach((step, index) => {
+                inView(step, () => {
+                    isUserScrolling = true;
+                    if (scrollTimeout) clearTimeout(scrollTimeout);
+
+                    slideIndex = index;
+                    showSlide(slideIndex);
+
+                    // Resume auto-slideshow if no scroll-triggered changes for 4 seconds
+                    scrollTimeout = setTimeout(() => {
+                        isUserScrolling = false;
+                    }, 4000);
+                }, { amount: 0.5 });
+            });
+
+            startAutoSlide();
 
             const appGroup = document.getElementById("apps-container");
             // Translate by the total width of the content, subtracting 100vw so the very end aligns perfectly with the right edge.
