@@ -2140,10 +2140,10 @@
                         // Check if we just showed the last slide in the set
                         if ((slideIndex + 1) % overlayImgs.length === 0) {
                             clearInterval(autoSlideInterval);
-                            setTimeout(startAutoSlide, 10000); // 10s pause after full loop
+                            setTimeout(startAutoSlide, 5000); // 5s pause after full loop
                         }
                     }
-                }, 2000); // 2s per slide
+                }, 4000); // 4s per slide
             };
 
             htuSteps.forEach((step, index) => {
