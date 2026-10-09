@@ -1,0 +1,39 @@
+{
+  "_note": "Add/remove subpages in the 'subpages' array. type:'static'=copy as-is, type:'build'=run buildCommand first. outputDir=where files are ('.' for repo root). astroBase=inject base path into Astro config for sub-path hosting. branch=git branch to clone.",
+  "main": {
+    "buildCommand": "pnpm install && pnpm run build",
+    "outputDir": "dist"
+  },
+  "subpages": [
+    {
+      "path": "/python",
+      "repo": "https://github.com/classpadDev/python",
+      "branch": "main",
+      "type": "static",
+      "outputDir": "."
+    },
+    {
+      "path": "/first-run",
+      "repo": "https://github.com/ClasspadDev/first-run",
+      "branch": "main",
+      "type": "static",
+      "outputDir": "."
+    },
+    {
+      "path": "/store",
+      "repo": "https://github.com/ClasspadDev/store",
+      "branch": "main",
+      "type": "static",
+      "outputDir": "."
+    },
+    {
+      "path": "/wiki",
+      "repo": "https://github.com/TheRainbowPhoenix/wiki",
+      "branch": "main",
+      "type": "build",
+      "buildCommand": "pnpm install && pnpm run build",
+      "outputDir": "dist",
+      "astroBase": "/wiki/"
+    }
+  ]
+}
