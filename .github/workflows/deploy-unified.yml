@@ -32,17 +32,32 @@ jobs:
       - name: Install wrangler
         run: pnpm add -g wrangler
 
-      # ── Build the main site ──────────────────────────────────────
+      # ── Build or copy the main site ─────────────────────────────
       - name: Build main site
         run: |
-          MAIN_BUILD_CMD=$(jq -r '.main.buildCommand // "pnpm install && pnpm run build"' subpages.json)
-          MAIN_OUTPUT=$(jq -r '.main.outputDir // "dist"' subpages.json)
+          MAIN_BUILD_CMD=$(jq -r '.main.buildCommand // ""' subpages.json)
+          MAIN_OUTPUT=$(jq -r '.main.outputDir // "."' subpages.json)
 
-          echo "▶ Building main site: $MAIN_BUILD_CMD"
-          eval "$MAIN_BUILD_CMD"
+          if [ -n "$MAIN_BUILD_CMD" ]; then
+            echo "▶ Building main site: $MAIN_BUILD_CMD"
+            eval "$MAIN_BUILD_CMD"
+          else
+            echo "▶ Main site is static — skipping build"
+          fi
 
           mkdir -p ./unified
-          cp -r ./$MAIN_OUTPUT/. ./unified/
+          if [ "$MAIN_OUTPUT" = "." ]; then
+            # Copy static files without copying the output folder into itself
+            rsync -a \
+              --exclude='.git/' \
+              --exclude='.github/' \
+              --exclude='node_modules/' \
+              --exclude='unified/' \
+              --exclude='subpages.json' \
+              ./ ./unified/
+          else
+            cp -r "./$MAIN_OUTPUT/." ./unified/
+          fi
           echo "✓ Main site → ./unified"
 
       # ── Clone, build, and integrate each subpage ─────────────────
