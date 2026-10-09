@@ -1,0 +1,39 @@
+id:          42
+slug:        chess
+name:        Chess
+author:      DeceasedSnake82
+description: A chess ai you can play against.
+
+downloadUrl: https://github.com/DeceasedSnake82/CP400-Chess/releases/download/latest/Chess.hh3  # *
+detailsUrl:  https://github.com/DeceasedSnake82/CP400-Chess                                 # optional
+
+format:  .hh3 
+
+image:    /store/images/cover/chess.png
+position: center
+
+screenshots:
+  - /store/images/chess/chess1.png
+  - /store/images/chess/chess2.png
+  - /store/images/chess/chess3.png
+  - /store/images/chess/chess4.png
+
+tags: 
+  - Game
+  - Puzzle
+  - Classic
+  - Strategy
+
+# Developer support links (all optional)
+contact: robbie.rose@hotmail.com
+
+# Long description — Markdown supported, will render on the detail page
+longDescription: |
+  A custom chess engine that runs locally on the CP400.
+
+  ## Features
+  - Configurable search depth, recommended 4-5.
+  - All moves, check detection, checkmate, stalemate, ect.
+
+  ## Controls
+  - Only touchscreen required.

@@ -1,0 +1,297 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Chat Demo</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600&display=swap" rel="stylesheet">
+    <style>
+        body {
+            margin: 0;
+            background-color: #1f2325;
+            font-family: 'Poppins', sans-serif;
+            color: #d6deeb;
+            display: flex;
+            flex-direction: column;
+            height: 100vh;
+            overflow: hidden;
+        }
+
+        #chat-container {
+            flex: 1;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+            overflow-y: auto;
+            scroll-behavior: smooth;
+        }
+
+        .message {
+            display: flex;
+            flex-direction: row;
+            max-width: 85%;
+            opacity: 0;
+            transform: translateY(10px);
+            animation: fadeIn 0.3s forwards;
+            gap: 8px;
+        }
+
+        @keyframes fadeIn {
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .message.user {
+            align-self: flex-end;
+            align-items: flex-end;
+        }
+
+        .message.others {
+            align-self: flex-start;
+            align-items: flex-end;
+        }
+
+        .avatar {
+            width: 30px;
+            min-width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            background-color: #333;
+            /* margin-bottom: 5px; */
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 12px;
+            font-weight: bold;
+            color: #fff;
+        }
+
+        .avatar.user {
+            background-color: #00dc68;
+            color: #1f2325;
+        }
+
+        .avatar.helper1 {
+            background-color: #f78c6c;
+        }
+
+        .avatar.helper2 {
+            background-color: #82aaff;
+        }
+
+        .bubble {
+            padding: 10px 15px;
+            border-radius: 12px;
+            font-size: 14px;
+            line-height: 1.4;
+            position: relative;
+            word-wrap: break-word;
+        }
+
+        .message.user .bubble {
+            background-color: #00dc68;
+            color: #003719;
+            border-bottom-right-radius: 2px;
+        }
+
+        .message.others .bubble {
+            background-color: #2c3033;
+            color: #d6deeb;
+            border-bottom-left-radius: 2px;
+        }
+
+        .bubble a {
+            color: #82aaff;
+            text-decoration: underline;
+        }
+
+        .message.user .bubble a {
+            color: #003719;
+            font-weight: 600;
+        }
+
+        /* Code Block Styling */
+        .code-block {
+            background-color: #111;
+            padding: 8px;
+            border-radius: 6px;
+            font-family: 'Consolas', 'Monaco', monospace;
+            font-size: 12px;
+            margin-top: 5px;
+            color: #d6deeb;
+            white-space: pre-wrap;
+            border: 1px solid #444;
+        }
+
+        .message.user .code-block {
+            background-color: #003719;
+            /* Dark green bg for code in user bubble */
+            color: #a3f7bf;
+            border-color: #005c2a;
+        }
+
+        .syntax-kw {
+            color: #c792ea;
+        }
+
+        .syntax-str {
+            color: #ecc48d;
+        }
+
+        .syntax-fn {
+            color: #82aaff;
+        }
+
+        .syntax-comment {
+            color: #637777;
+            font-style: italic;
+        }
+
+        /* Scrollbar */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: #1f2325;
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: #333;
+            border-radius: 4px;
+        }
+
+        ::-webkit-scrollbar-thumb:hover {
+            background: #444;
+        }
+    </style>
+</head>
+
+<body>
+    <div id="chat-container"></div>
+
+    <script>
+        const container = document.getElementById('chat-container');
+
+        const messages = [
+            {
+                type: 'user',
+                name: 'Markus',
+                content: 'Hey, I tried this code but it doesn\'t work:',
+                code: `import gint\ngint.dclear(gint.C_WHITE)\ngint.dtext("Hello", 10, 10, gint.C_BLACK)\n# Nothing happens on screen :/`
+            },
+            {
+                type: 'others',
+                id: 'helper1',
+                name: 'Dante',
+                content: 'You forgot <code>gint.dupdate()</code>! The screen buffer isn\'t flushed to the display automatically.',
+                delay: 2000
+            },
+            {
+                type: 'others',
+                id: 'helper3',
+                name: 'John',
+                content: 'Check this: <a href="https://classpaddev.github.io/wiki/python/reference/gint/#dupdate---none" target="_blank">gint.dupdate() Reference</a>',
+                delay: 3500
+            },
+            {
+                type: 'others',
+                id: 'helper2',
+                name: 'Phoebe',
+                content: 'Yeah, drawing operations only update VRAM. You need to push it to the screen. See: <a href="https://classpaddev.github.io/wiki/python/examples/rectangle/#wait-what-is-a-pixel" target="_blank">Wait, what is a pixel?</a>',
+                delay: 5500
+            },
+            {
+                type: 'user',
+                name: 'Me',
+                content: 'Ah, I see! Thanks guys, it works now.',
+                delay: 8000
+            }
+        ];
+
+        // Render Logic
+        function createMessageElement(msg) {
+            const wrapper = document.createElement('div');
+            wrapper.className = `message ${msg.type}`;
+
+            const avatar = document.createElement('div');
+            avatar.className = `avatar ${msg.type === 'user' ? 'user' : msg.id}`;
+            avatar.innerText = msg.name[0];
+
+            const contentDiv = document.createElement('div');
+            contentDiv.style.display = 'flex';
+            contentDiv.style.flexDirection = 'column';
+            contentDiv.style.maxWidth = '100%';
+
+            if (msg.type === 'others') {
+                // Name label
+                const nameLabel = document.createElement('span');
+                nameLabel.style.fontSize = '11px';
+                nameLabel.style.color = '#888';
+                nameLabel.style.marginLeft = '10px';
+                nameLabel.style.marginBottom = '2px';
+                nameLabel.innerText = msg.name;
+                contentDiv.appendChild(nameLabel);
+            }
+
+            const bubble = document.createElement('div');
+            bubble.className = 'bubble';
+            bubble.innerHTML = msg.content;
+
+            if (msg.code) {
+                const codeBlock = document.createElement('div');
+                codeBlock.className = 'code-block';
+                // Simple syntax highlighting
+                codeBlock.innerHTML = msg.code
+                // .replace(/import|gint/g, '<span class="syntax-kw">$&</span>')
+                // .replace(/"(.*?)"/g, '<span class="syntax-str">"$1"</span>')
+                // .replace(/dclear|dtext/g, '<span class="syntax-fn">$&</span>')
+                // .replace(/#.*/g, '<span class="syntax-comment">$&</span>');
+                bubble.appendChild(codeBlock);
+            }
+
+            contentDiv.appendChild(bubble);
+
+            if (msg.type === 'others') {
+                wrapper.appendChild(avatar);
+                wrapper.appendChild(contentDiv);
+            } else {
+                wrapper.appendChild(contentDiv);
+                wrapper.appendChild(avatar);
+            }
+
+            return wrapper;
+        }
+
+        function startSequence() {
+            container.innerHTML = '';
+
+            messages.forEach((msg, index) => {
+                // Use the 'delay' property as the timestamp for when this message should appear
+                // Defaulting to a cascade if not precise (but we set precise delays in array)
+                const appearTime = msg.delay !== undefined ? msg.delay : index * 2000;
+
+                setTimeout(() => {
+                    const el = createMessageElement(msg);
+                    container.appendChild(el);
+                    container.scrollTop = container.scrollHeight; // Auto scroll
+
+                    // If it's the last message, schedule reset
+                    if (index === messages.length - 1) {
+                        setTimeout(startSequence, 60000); // Reset after 60s
+                    }
+                }, appearTime);
+            });
+        }
+
+        // Start
+        startSequence();
+
+    </script>
+</body>
+
+</html>

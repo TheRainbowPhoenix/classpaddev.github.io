@@ -1,0 +1,24 @@
+# HollyHock
+
+> HollyHock is an c/c++ framework for building programs on casio classpad. 
+
+- HollyHock uses a custom trimmed down version of the libc.
+- HollyHock have both the version 2 and 3. You should use the version 3 unless asked otherwise.
+
+## Documentation Sets
+
+- [Abridged documentation](https://classpaddev.github.io/wiki/llms-small.txt): a compact version of the documentation for HollyHock, with non-essential content removed
+- [Complete documentation](https://classpaddev.github.io/wiki/llms-full.txt): the full documentation for HollyHock
+- [Reference](https://classpaddev.github.io/wiki/_llms-txt/reference.txt): terse, structured descriptions of HollyHock APIs
+- [How-to Recipes](https://classpaddev.github.io/wiki/_llms-txt/how-to-recipes.txt): guided examples of adding features to an HollyHock project
+- [Python Extra](https://classpaddev.github.io/wiki/_llms-txt/python-extra.txt): How to use Python on the classpad
+- [Migration Guides](https://classpaddev.github.io/wiki/_llms-txt/migration-guides.txt): advice on how to migrate to V3 (hh3)
+
+## Notes
+
+- The complete documentation includes all content from the official documentation
+- The content is automatically generated from the same source as the official documentation
+
+## Optional
+
+- [The Classpad.Dev blog](https://classpaddev.github.io/blog/): the latest news about Classpad and HollyHock development

@@ -1,0 +1,289 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PythonExtra Demo: Cyberspace</title>
+    <style>
+        body {
+            background-color: #222;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            font-family: monospace;
+            color: #888;
+        }
+
+        #calculator-bezel {
+            background-color: #e0e0e0;
+            padding: 20px;
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        canvas {
+            background-color: #000;
+            border: 2px solid #999;
+            /* Ensures crisp scaling on high-DPI screens */
+            image-rendering: pixelated;
+            image-rendering: crisp-edges;
+            width: 320px;
+            height: 528px;
+            box-shadow: inset 0 0 10px rgba(0, 0, 0, 0.8);
+        }
+
+        .controls {
+            margin-top: 10px;
+            font-size: 12px;
+        }
+
+        html {
+            overflow: hidden;
+        }
+    </style>
+</head>
+
+<body>
+
+    <div id="calculator-bezel">
+        <!-- Canvas size matches calculator resolution exactly -->
+        <canvas id="screen" width="320" height="528"></canvas>
+    </div>
+
+    <script>
+        /**
+         * GINT / PYTHONEXTRA SHIM FOR JS CANVAS
+         * Mimics the environment of the calculator
+         */
+        const canvas = document.getElementById('screen');
+        const ctx = canvas.getContext('2d', { alpha: false }); // Optimize for no transparency
+        const DWIDTH = 320;
+        const DHEIGHT = 528;
+
+        // Configuration from Python script
+        const WIDTH = DWIDTH;
+        const HEIGHT = DHEIGHT;
+        const CX = Math.floor(WIDTH / 2);
+        const CY = Math.floor(HEIGHT / 2);
+
+        // Disable smoothing for pixel-perfect rendering
+        ctx.imageSmoothingEnabled = false;
+
+        // Color helper: Maps 0-31 range (RGB555) to 0-255 CSS RGB
+        function C_RGB(r, g, b) {
+            const R = Math.floor(r * 255 / 31);
+            const G = Math.floor(g * 255 / 31);
+            const B = Math.floor(b * 255 / 31);
+            return `rgb(${R}, ${G}, ${B})`;
+        }
+
+        const C_WHITE = C_RGB(31, 31, 31);
+        const C_BG = "#000000";
+        const C_NONE = null;
+
+        // Drawing Primitives - Integers only for pixel alignment
+        function dclear(color) {
+            ctx.fillStyle = color;
+            ctx.fillRect(0, 0, WIDTH, HEIGHT);
+        }
+
+        function dline(x1, y1, x2, y2, color) {
+            if (!color) return;
+            ctx.strokeStyle = color;
+            ctx.lineWidth = 1; // 1px lines for precision
+            ctx.beginPath();
+            // Math.floor ensures we hit exact pixels
+            ctx.moveTo(Math.floor(x1) + 0.5, Math.floor(y1) + 0.5);
+            ctx.lineTo(Math.floor(x2) + 0.5, Math.floor(y2) + 0.5);
+            ctx.stroke();
+        }
+
+        function drect(x1, y1, x2, y2, color) {
+            if (!color) return;
+            ctx.fillStyle = color;
+            const x = Math.min(x1, x2) | 0;
+            const y = Math.min(y1, y2) | 0;
+            const w = (Math.abs(x2 - x1) + 1) | 0;
+            const h = (Math.abs(y2 - y1) + 1) | 0;
+            ctx.fillRect(x, y, w, h);
+        }
+
+        // Text handling
+        const DTEXT_LEFT = 'left';
+        const DTEXT_CENTER = 'center';
+        const DTEXT_RIGHT = 'right';
+        const DTEXT_TOP = 'top';
+        const DTEXT_BOTTOM = 'bottom';
+
+        function dtext(x, y, color, text) {
+            if (!color) return;
+            ctx.fillStyle = color;
+            ctx.font = '16px "Courier New", monospace';
+            ctx.textAlign = 'left';
+            ctx.textBaseline = 'top';
+            ctx.fillText(text, Math.floor(x), Math.floor(y));
+        }
+
+        function dtext_opt(x, y, fg, bg, halign, valign, text) {
+            ctx.font = '16px "Courier New", monospace';
+            ctx.textAlign = halign;
+
+            if (valign === DTEXT_TOP) ctx.textBaseline = 'top';
+            else if (valign === DTEXT_BOTTOM) ctx.textBaseline = 'bottom';
+            else ctx.textBaseline = 'middle';
+
+            ctx.fillStyle = fg;
+            ctx.fillText(text, Math.floor(x), Math.floor(y));
+        }
+
+        /**
+         * MAIN DEMO LOGIC
+         */
+
+        // 3D Cube Data
+        const VERTICES = [
+            [-1, -1, -1], [1, -1, -1], [1, 1, -1], [-1, 1, -1],
+            [-1, -1, 1], [1, -1, 1], [1, 1, 1], [-1, 1, 1]
+        ];
+
+        const EDGES = [
+            [0, 1], [1, 2], [2, 3], [3, 0],
+            [4, 5], [5, 6], [6, 7], [7, 4],
+            [0, 4], [1, 5], [2, 6], [3, 7]
+        ];
+
+        // State variables
+        let angle_x = 0.0;
+        let angle_y = 0.0;
+        let angle_z = 0.0;
+        const scale_base = 80;
+
+        // Scroller
+        const msg = "   WELCOME TO PYTHONEXTRA ... DEMO SCENE EFFECT ... GINT GRAPHICS LIBRARY ... 3D CUBE RENDERING ...   ";
+        let msg_x = WIDTH;
+        const text_width = msg.length * 10;
+
+        function rotate_point(x, y, z, ax, ay, az) {
+            let s, c;
+            // Rotate X
+            if (ax !== 0) {
+                s = Math.sin(ax); c = Math.cos(ax);
+                let ny = y * c - z * s;
+                let nz = y * s + z * c;
+                y = ny; z = nz;
+            }
+            // Rotate Y
+            if (ay !== 0) {
+                s = Math.sin(ay); c = Math.cos(ay);
+                let nx = x * c - z * s;
+                let nz = x * s + z * c;
+                x = nx; z = nz;
+            }
+            // Rotate Z
+            if (az !== 0) {
+                s = Math.sin(az); c = Math.cos(az);
+                let nx = x * c - y * s;
+                let ny = x * s + y * c;
+                x = nx; y = ny;
+            }
+            return { x, y, z };
+        }
+
+        // Animation Loop Control
+        const FPS = 40;
+        const FRAME_INTERVAL = 1000 / FPS;
+        let lastFrameTime = 0;
+        const startTime = Date.now();
+
+        function loop(currentTime) {
+            requestAnimationFrame(loop);
+
+            // FPS Limiter
+            const elapsed = currentTime - lastFrameTime;
+            if (elapsed < FRAME_INTERVAL) return;
+
+            // Adjust lastFrameTime to target interval (avoids drift)
+            lastFrameTime = currentTime - (elapsed % FRAME_INTERVAL);
+
+            // Logic time relative to start
+            const t = (Date.now() - startTime) / 1000;
+
+            // Update Physics
+            angle_x += 0.04;
+            angle_y += 0.02;
+            angle_z += 0.01;
+
+            const y_offset = Math.sin(t * 2.5) * 60;
+
+            // Colors
+            const r = Math.floor((Math.sin(t * 3) + 1) * 15.5);
+            const g = Math.floor((Math.sin(t * 3 + 2) + 1) * 15.5);
+            const b = Math.floor((Math.sin(t * 3 + 4) + 1) * 15.5);
+            const col_wire = C_RGB(r, g, b);
+
+            // Draw
+            dclear(C_BG);
+
+            // Background Grid
+            const grid_col = C_RGB(6, 6, 6);
+            const grid_speed = (t * 50) % 40;
+
+            for (let i = 0; i < HEIGHT / 2; i += 40) {
+                const y_pos = HEIGHT - i + grid_speed;
+                if (y_pos < HEIGHT) {
+                    dline(0, y_pos, WIDTH, y_pos, grid_col);
+                }
+            }
+            for (let i = -200; i < WIDTH + 200; i += 80) {
+                dline(i, HEIGHT, CX, CY, grid_col);
+            }
+
+            // 3D Cube
+            const projected_points = [];
+
+            for (let v of VERTICES) {
+                const p = rotate_point(v[0], v[1], v[2], angle_x, angle_y, angle_z);
+                const dist = 4;
+                const z_factor = 1 / (dist - p.z);
+
+                // Floor coordinates for pixel perfection
+                const px = Math.floor(p.x * scale_base * z_factor + CX);
+                const py = Math.floor(p.y * scale_base * z_factor + CY + y_offset);
+
+                projected_points.push({ x: px, y: py });
+            }
+
+            for (let edge of EDGES) {
+                const p1 = projected_points[edge[0]];
+                const p2 = projected_points[edge[1]];
+                dline(p1.x, p1.y, p2.x, p2.y, col_wire);
+            }
+
+            // Scroller
+            drect(0, HEIGHT - 30, WIDTH, HEIGHT, C_RGB(0, 0, 10));
+            dline(0, HEIGHT - 30, WIDTH, HEIGHT - 30, C_WHITE);
+            dtext(Math.floor(msg_x), HEIGHT - 24, C_WHITE, msg);
+
+            msg_x -= 3;
+            if (msg_x < -text_width) {
+                msg_x = WIDTH;
+            }
+
+            // HUD
+            dtext_opt(CX, 10, C_WHITE, null, DTEXT_CENTER, DTEXT_TOP, "PythonExtra Demo");
+            dtext_opt(CX, 25, col_wire, null, DTEXT_CENTER, DTEXT_TOP, "[EXIT] to Quit");
+        }
+
+        // Initialize loop
+        loop(0);
+
+    </script>
+</body>
+
+</html>

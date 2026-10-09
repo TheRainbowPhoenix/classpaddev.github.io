@@ -1,0 +1,56 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+	<meta charset="utf-8" />
+	<meta name="viewport" content="width=device-width, initial-scale=1" />
+	<link rel="preconnect" href="https://fonts.googleapis.com" />
+	<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="anonymous" />
+	<link
+		href="https://fonts.googleapis.com/css2?family=Archivo+Black&family=Poppins:wght@300;400;500;600;700&display=swap"
+		rel="stylesheet" />
+
+	<script src="https://analytics.ahrefs.com/analytics.js" data-key="Kb2nywKkyR+dD+Av2GmerQ" async></script>
+
+	<script>
+		document.addEventListener('click', function (e) {
+			const link = e.target.closest('a');
+			if (!link) return;
+
+			const href = link.getAttribute('href');
+			if (href && href.startsWith('https://raw.githubusercontent.com/') && href.endsWith('.py')) {
+				e.preventDefault();
+				downloadFile(href);
+			}
+		});
+
+		async function downloadFile(url) {
+			try {
+				const response = await fetch(url);
+				const blob = await response.blob();
+				const downloadUrl = window.URL.createObjectURL(blob);
+				const a = document.createElement('a');
+				a.href = downloadUrl;
+				// Extract filename from URL
+				const filename = url.split('/').pop() || 'download.py';
+				a.download = filename;
+				document.body.appendChild(a);
+				a.click();
+				window.URL.revokeObjectURL(downloadUrl);
+				a.remove();
+			} catch (error) {
+				console.error('Download failed:', error);
+				// Fallback to default behavior if fetch fails
+				window.open(url, '_blank');
+			}
+		} 
+	</script>
+
+	%sveltekit.head%
+</head>
+
+<body data-sveltekit-preload-data="hover">
+	<div style="display: contents">%sveltekit.body%</div>
+</body>
+
+</html>

@@ -1,0 +1,43 @@
+[
+    {
+      "name": "EndlessBrickBreakerPlus",
+      "description": "An endless brick breaker game that has also upgrades",
+      "author": "Henry",
+      "releaseDate": "2025-04-18",
+      "installation": "https://github.com/ClasspadDev/EndlessBrickBreakerPlus/",
+      "download": "https://raw.githubusercontent.com/ClasspadDev/EndlessBrickBreakerPlus/refs/heads/main/EndlessBrickBreakerPlus.py"
+    },
+    {
+      "name": "Templar",
+      "description": "The knight guardian of the temple does not want to turn into an undead creature and must therefore keep himself in shape.",
+      "author": "Lephenixnoir",
+      "releaseDate": "2025-04-27",
+      "installation": "https://www.planet-casio.com/Fr/programmes/programme4545-1-templar-lephenixnoir-jeux-actionsport.html",
+      "download": "https://git.planet-casio.com/Lephenixnoir/templar/archive/main.zip"
+    },
+    {
+      "name": "Meroes Golem",
+      "description": "Small platformer game",
+      "author": "Killfaeh",
+      "releaseDate": "2025-04-27",
+      "installation": "https://github.com/Killfaeh/MeroesGolem/tree/main",
+      "download": "https://github.com/Killfaeh/MeroesGolem/raw/refs/heads/main/meroe2.zip"
+    },
+    {
+      "name": "TempleWarriors",
+      "description": "Your mission is clear: protect the three crystals hidden in the temple at all costs.",
+      "author": "Farhi",
+      "releaseDate": "2025-04-27",
+      "installation": "https://www.planet-casio.com/Fr/programmes/programme4546-1-templewarriors-farhi-jeux-strategie.html",
+      "download": "https://www.planet-casio.com/Fr/programmes/programme4546-1-templewarriors-farhi-jeux-strategie.html"
+    },
+    {
+      "name": "Temple of the Spiral Serpent",
+      "description": "DOS-like exploration game",
+      "author": "Phoebe",
+      "releaseDate": "2025-04-27",
+      "installation": "Hollyhock-2",
+      "download": "https://github.com/TheRainbowPhoenix/ruins-explorer/releases/download/1.0/TOSS.zip"
+    }
+  ]
+  

@@ -1,0 +1,621 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DVD Bounce Tutorial</title>
+    <style>
+        body {
+            margin: 0;
+            background-color: #f4f4f5;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        /* Container: 560x560 squared rectangle as requested */
+        #container {
+            width: 660px;
+            height: 560px;
+            background-color: #fff;
+            display: flex;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+            overflow: hidden;
+            border-radius: 8px;
+        }
+
+        /* Left: Code Editor */
+        #code-panel {
+            flex: 1;
+            background-color: #1f2325;
+            /* Dark editor bg */
+            color: #d6deeb;
+            font-family: 'Consolas', 'Monaco', monospace;
+            font-size: 11px;
+            /* Small font to fit */
+            padding: 10px;
+            overflow: hidden;
+            position: relative;
+            display: flex;
+            flex-direction: column;
+        }
+
+        #code-content {
+            line-height: 1.4;
+        }
+
+        /* Cursor effect */
+        .cursor::after {
+            content: '▋';
+            color: #00dc68;
+            animation: blink 1s step-end infinite;
+        }
+
+        @keyframes blink {
+            50% {
+                opacity: 0;
+            }
+        }
+
+        /* Right: Output Canvas */
+        #output-panel {
+            width: 280px;
+            /* Approx half */
+            background-color: #f4f4f5;
+            /* Match body bg */
+            position: relative;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background-image: url('https://classpaddev.github.io/img/cp.svg');
+            background-size: 300px 713px;
+            background-position: -11px 24px;
+            background-repeat: no-repeat;
+        }
+
+        canvas {
+            background-color: #1f2325;
+            /* Screen bg */
+            width: 220px;
+            /* Scaled down from 320 to fit in panel */
+            height: 363px;
+            /* Scaled down from 528 */
+            image-rendering: pixelated;
+            box-shadow: inset 0 0 10px rgba(0, 0, 0, 0.5);
+            /* Optional: slight border radius to match screen if needed */
+        }
+
+        /* User provided code styling classes */
+        .ec-line {
+            margin: 0;
+            min-height: 1.4em;
+        }
+
+        .code {
+            display: inline-block;
+        }
+
+        .indent {
+            display: inline-block;
+            width: 2em;
+        }
+
+        #code-template {
+            font-family: var(--ec-uiFontFml);
+            font-size: var(--ec-uiFontSize);
+            font-weight: var(--ec-uiFontWg);
+            line-height: var(--ec-uiLineHt);
+            text-size-adjust: none;
+            -webkit-text-size-adjust: none
+        }
+
+        #code-template *:not(:is(svg, svg *)) {
+            all: revert;
+            box-sizing: border-box
+        }
+
+        #code-template pre {
+            display: flex;
+            margin: 0;
+            padding: 0;
+            border: var(--ec-brdWd) solid var(--ec-brdCol);
+            border-radius: calc(var(--ec-brdRad) + var(--ec-brdWd));
+            background: var(--ec-codeBg)
+        }
+
+        #code-template pre: focus-visible {
+            outline: 3px solid var(--ec-focusBrd);
+            outline-offset: -3px
+        }
+
+        #code-template pre>code {
+            all: unset;
+            display: block;
+            flex: 1 0 100%;
+            padding: var(--ec-codePadBlk) 0;
+            color: var(--ec-codeFg);
+            font-family: var(--ec-codeFontFml);
+            font-size: var(--ec-codeFontSize);
+            font-weight: var(--ec-codeFontWg);
+            line-height: var(--ec-codeLineHt)
+        }
+
+        #code-template pre {
+            overflow-x: auto
+        }
+
+        #code-template pre.wrap .ec-line .code {
+            white-space: pre-wrap;
+            overflow-wrap: break-word;
+            min-width: min(20ch, var(--ecMaxLine, 20ch))
+        }
+
+        #code-template pre.wrap .ec-line .code span.indent {
+            white-space: pre
+        }
+    </style>
+</head>
+
+<body>
+    <div id="container">
+        <div id="code-panel">
+            <div id="code-content"></div>
+        </div>
+        <div id="output-panel">
+            <canvas id="screen" width="320" height="528"></canvas>
+        </div>
+    </div>
+
+    <!-- Hidden Template with the User's HTML Code -->
+    <template id="code-template">
+        <div class="ec-line">
+            <div class="code"><span style="color:#C792EA">import</span><span style="color:#D6DEEB"> gint</span></div>
+        </div>
+        <div class="ec-line">
+            <div class="code"></div>
+        </div>
+        <div class="ec-line">
+            <div class="code"><span style="color:#82AAFF">DVD</span><span style="color:#D6DEEB"> </span><span
+                    style="color:#C792EA">=</span><span style="color:#D6DEEB"> </span><span
+                    style="color:#D9F5DD">[</span></div>
+        </div>
+        <div class="ec-line">
+            <div class="code"><span class="indent"> </span><span style="color:#D9F5DD">"</span><span
+                    style="color:#ECC48D"> </span><span style="color:#D9F5DD">"</span><span
+                    style="color:#D6DEEB">,</span></div>
+        </div>
+        <div class="ec-line">
+            <div class="code"><span class="indent"> </span><span style="color:#D9F5DD">"</span><span
+                    style="color:#ECC48D; white-space: pre;">   ####    ####        </span><span style="color:#D9F5DD">"</span><span
+                    style="color:#D6DEEB">,</span></div>
+        </div>
+        <div class="ec-line">
+            <div class="code"><span class="indent"> </span><span style="color:#D9F5DD">"</span><span
+                    style="color:#ECC48D; white-space: pre;">  #       #    #       </span><span style="color:#D9F5DD">"</span><span
+                    style="color:#D6DEEB">,</span></div>
+        </div>
+        <div class="ec-line">
+            <div class="code"><span class="indent"> </span><span style="color:#D9F5DD">"</span><span
+                    style="color:#ECC48D; white-space: pre;">  #       #    #       </span><span style="color:#D9F5DD">"</span><span
+                    style="color:#D6DEEB">,</span></div>
+        </div>
+        <div class="ec-line">
+            <div class="code"><span class="indent"> </span><span style="color:#D9F5DD">"</span><span
+                    style="color:#ECC48D; white-space: pre;">  #       ######   ### </span><span style="color:#D9F5DD">"</span><span
+                    style="color:#D6DEEB">,</span></div>
+        </div>
+        <div class="ec-line">
+            <div class="code"><span class="indent"> </span><span style="color:#D9F5DD">"</span><span
+                    style="color:#ECC48D; white-space: pre;">  #       #            </span><span style="color:#D9F5DD">"</span><span
+                    style="color:#D6DEEB">,</span></div>
+        </div>
+        <div class="ec-line">
+            <div class="code"><span class="indent"> </span><span style="color:#D9F5DD">"</span><span
+                    style="color:#ECC48D; white-space: pre;">  #       #            </span><span style="color:#D9F5DD">"</span><span
+                    style="color:#D6DEEB">,</span></div>
+        </div>
+        <div class="ec-line">
+            <div class="code"><span class="indent"> </span><span style="color:#D9F5DD">"</span><span
+                    style="color:#ECC48D; white-space: pre;">   ###    #            </span><span style="color:#D9F5DD">"</span><span
+                    style="color:#D6DEEB">,</span></div>
+        </div>
+        <div class="ec-line">
+            <div class="code"><span class="indent"> </span><span style="color:#D9F5DD">"</span><span
+                    style="color:#ECC48D; white-space: pre;">                       </span><span style="color:#D9F5DD">"</span><span
+                    style="color:#D6DEEB">,</span></div>
+        </div>
+        <div class="ec-line">
+            <div class="code"><span class="indent"> </span><span style="color:#D9F5DD">"</span><span
+                    style="color:#ECC48D; white-space: pre;">  ####   #####  #   #  </span><span style="color:#D9F5DD">"</span><span
+                    style="color:#D6DEEB">,</span></div>
+        </div>
+        <div class="ec-line">
+            <div class="code"><span class="indent"> </span><span style="color:#D9F5DD">"</span><span
+                    style="color:#ECC48D; white-space: pre;">  #   #  #      #   #  </span><span style="color:#D9F5DD">"</span><span
+                    style="color:#D6DEEB">,</span></div>
+        </div>
+        <div class="ec-line">
+            <div class="code"><span class="indent"> </span><span style="color:#D9F5DD">"</span><span
+                    style="color:#ECC48D; white-space: pre;">  #   #  #      #   #  </span><span style="color:#D9F5DD">"</span><span
+                    style="color:#D6DEEB">,</span></div>
+        </div>
+        <div class="ec-line">
+            <div class="code"><span class="indent"> </span><span style="color:#D9F5DD">"</span><span
+                    style="color:#ECC48D; white-space: pre;">  #   #  #####  #   #  </span><span style="color:#D9F5DD">"</span><span
+                    style="color:#D6DEEB">,</span></div>
+        </div>
+        <div class="ec-line">
+            <div class="code"><span class="indent"> </span><span style="color:#D9F5DD">"</span><span
+                    style="color:#ECC48D; white-space: pre;">  #   #  #       # #   </span><span style="color:#D9F5DD">"</span><span
+                    style="color:#D6DEEB">,</span></div>
+        </div>
+        <div class="ec-line">
+            <div class="code"><span class="indent"> </span><span style="color:#D9F5DD">"</span><span
+                    style="color:#ECC48D; white-space: pre;">  #   #  #       # #   </span><span style="color:#D9F5DD">"</span><span
+                    style="color:#D6DEEB">,</span></div>
+        </div>
+        <div class="ec-line">
+            <div class="code"><span class="indent"> </span><span style="color:#D9F5DD">"</span><span
+                    style="color:#ECC48D; white-space: pre;">  ####   #####    #    </span><span style="color:#D9F5DD">"</span><span
+                    style="color:#D6DEEB">,</span></div>
+        </div>
+        <div class="ec-line">
+            <div class="code"><span style="color:#D9F5DD">]</span></div>
+        </div>
+        <div class="ec-line">
+            <div class="code"></div>
+        </div>
+        <div class="ec-line">
+            <div class="code"><span style="color:#82AAFF">DVD_W</span><span style="color:#D6DEEB"> </span><span
+                    style="color:#C792EA">=</span><span style="color:#D6DEEB"> </span><span
+                    style="color:#F78C6C">23</span></div>
+        </div>
+        <div class="ec-line">
+            <div class="code"><span style="color:#82AAFF">DVD_H</span><span style="color:#D6DEEB"> </span><span
+                    style="color:#C792EA">=</span><span style="color:#D6DEEB"> </span><span
+                    style="color:#F78C6C">16</span></div>
+        </div>
+        <div class="ec-line">
+            <div class="code"></div>
+        </div>
+        <div class="ec-line">
+            <div class="code"><span style="color:#C792EA">def</span><span style="color:#D6DEEB"> </span><span
+                    style="color:#82AAFF">draw_logo</span><span style="color:#D9F5DD">(</span><span
+                    style="color:#7FDBCA">x</span><span style="color:#D6DEEB">, </span><span
+                    style="color:#7FDBCA">y</span><span style="color:#D6DEEB">, </span><span
+                    style="color:#7FDBCA">color=</span><span style="color:#D6DEEB">gint.</span><span
+                    style="color:#82AAFF">C_BLACK</span><span style="color:#D6DEEB">, </span><span
+                    style="color:#7FDBCA">bg=</span><span style="color:#D6DEEB">gint.</span><span
+                    style="color:#82AAFF">C_WHITE</span><span style="color:#D9F5DD">)</span><span
+                    style="color:#D6DEEB">:</span></div>
+        </div>
+        <div class="ec-line">
+            <div class="code"><span class="indent"> </span><span style="color:#C792EA">for</span><span
+                    style="color:#D6DEEB"> dy </span><span style="color:#C792EA">in</span><span style="color:#D6DEEB">
+                </span><span style="color:#C5E478">range</span><span style="color:#D6DEEB">(</span><span
+                    style="color:#82AAFF">DVD_H</span><span style="color:#D6DEEB">):</span></div>
+        </div>
+        <div class="ec-line">
+            <div class="code"><span class="indent"> </span><span style="color:#C792EA">for</span><span
+                    style="color:#D6DEEB"> dx </span><span style="color:#C792EA">in</span><span style="color:#D6DEEB">
+                </span><span style="color:#C5E478">range</span><span style="color:#D6DEEB">(</span><span
+                    style="color:#82AAFF">DVD_W</span><span style="color:#D6DEEB">):</span></div>
+        </div>
+        <div class="ec-line">
+            <div class="code"><span class="indent"> </span><span style="color:#C792EA">if</span><span
+                    style="color:#D6DEEB"> </span><span style="color:#F78C6C">0</span><span style="color:#D6DEEB">
+                </span><span style="color:#C792EA">&lt;=</span><span style="color:#D6DEEB"> x</span><span
+                    style="color:#C792EA">+</span><span style="color:#D6DEEB">dx </span><span
+                    style="color:#C792EA">&lt;</span><span style="color:#D6DEEB"> gint.</span><span
+                    style="color:#82AAFF">DWIDTH</span><span style="color:#D6DEEB"> </span><span
+                    style="color:#C792EA">and</span><span style="color:#D6DEEB"> </span><span
+                    style="color:#F78C6C">0</span><span style="color:#D6DEEB"> </span><span
+                    style="color:#C792EA">&lt;=</span><span style="color:#D6DEEB"> y</span><span
+                    style="color:#C792EA">+</span><span style="color:#D6DEEB">dy </span><span
+                    style="color:#C792EA">&lt;</span><span style="color:#D6DEEB"> gint.</span><span
+                    style="color:#82AAFF">DHEIGHT</span><span style="color:#D6DEEB">:</span></div>
+        </div>
+        <div class="ec-line">
+            <div class="code"><span class="indent"><span style="color:#D6DEEB"> </span></span><span
+                    style="color:#D6DEEB">pixel </span><span style="color:#C792EA">=</span><span style="color:#D6DEEB">
+                </span><span style="color:#82AAFF">DVD</span><span style="color:#D6DEEB">[dy]</span><span
+                    style="color:#D9F5DD">[</span><span style="color:#D6DEEB">dx</span><span
+                    style="color:#D9F5DD">]</span></div>
+        </div>
+        <div class="ec-line">
+            <div class="code"><span class="indent"><span style="color:#D6DEEB"> </span></span><span
+                    style="color:#D6DEEB">gint.</span><span style="color:#B2CCD6">dpixel</span><span
+                    style="color:#D6DEEB">(</span><span style="color:#82AAFF">x</span><span
+                    style="color:#C792EA">+</span><span style="color:#82AAFF">dx</span><span
+                    style="color:#D9F5DD">,</span><span style="color:#82AAFF"> y</span><span
+                    style="color:#C792EA">+</span><span style="color:#82AAFF">dy</span><span
+                    style="color:#D9F5DD">,</span><span style="color:#82AAFF"> color </span><span
+                    style="color:#C792EA">if</span><span style="color:#82AAFF"> pixel </span><span
+                    style="color:#C792EA">==</span><span style="color:#82AAFF"> </span><span
+                    style="color:#D9F5DD">'</span><span style="color:#ECC48D">#</span><span
+                    style="color:#D9F5DD">'</span><span style="color:#82AAFF"> </span><span
+                    style="color:#C792EA">else</span><span style="color:#82AAFF"> bg</span><span
+                    style="color:#D6DEEB">)</span></div>
+        </div>
+        <div class="ec-line">
+            <div class="code"></div>
+        </div>
+        <div class="ec-line">
+            <div class="code"><span style="color:#D6DEEB">x, y </span><span style="color:#C792EA">=</span><span
+                    style="color:#D6DEEB"> </span><span style="color:#F78C6C">50</span><span style="color:#D6DEEB">,
+                </span><span style="color:#F78C6C">50</span></div>
+        </div>
+        <div class="ec-line">
+            <div class="code"><span style="color:#D6DEEB">dx, dy </span><span style="color:#C792EA">=</span><span
+                    style="color:#D6DEEB"> </span><span style="color:#F78C6C">2</span><span style="color:#D6DEEB">,
+                </span><span style="color:#F78C6C">2</span></div>
+        </div>
+        <div class="ec-line">
+            <div class="code"><span style="color:#D6DEEB">bg </span><span style="color:#C792EA">=</span><span
+                    style="color:#D6DEEB"> gint.</span><span style="color:#82AAFF">C_WHITE</span></div>
+        </div>
+        <div class="ec-line">
+            <div class="code" data-trigger="init"><span style="color:#D6DEEB">fg </span><span
+                    style="color:#C792EA">=</span><span style="color:#D6DEEB"> gint.</span><span
+                    style="color:#82AAFF">C_BLACK</span></div>
+        </div>
+        <div class="ec-line">
+            <div class="code"></div>
+        </div>
+        <div class="ec-line">
+            <div class="code" data-trigger="loop"><span style="color:#C792EA">while</span><span style="color:#D6DEEB">
+                </span><span style="color:#FF6A83">True</span><span style="color:#D6DEEB">:</span></div>
+        </div>
+        <div class="ec-line">
+            <div class="code"><span class="indent"><span style="color:#D6DEEB"> </span></span><span
+                    style="color:#D6DEEB">gint.</span><span style="color:#B2CCD6">dclear</span><span
+                    style="color:#D6DEEB">(</span><span style="color:#82AAFF">bg</span><span
+                    style="color:#D6DEEB">)</span></div>
+        </div>
+        <div class="ec-line">
+            <div class="code"><span class="indent"> </span><span style="color:#B2CCD6">draw_logo</span><span
+                    style="color:#D6DEEB">(</span><span style="color:#82AAFF">x</span><span
+                    style="color:#D9F5DD">,</span><span style="color:#82AAFF"> y</span><span
+                    style="color:#D9F5DD">,</span><span style="color:#82AAFF"> fg</span><span
+                    style="color:#D9F5DD">,</span><span style="color:#82AAFF"> bg</span><span
+                    style="color:#D6DEEB">)</span></div>
+        </div>
+        <div class="ec-line">
+            <div class="code"><span class="indent"><span style="color:#D6DEEB"> </span></span><span
+                    style="color:#D6DEEB">gint.</span><span style="color:#B2CCD6">dupdate</span><span
+                    style="color:#D6DEEB">()</span></div>
+        </div>
+        <div class="ec-line">
+            <div class="code"></div>
+        </div>
+        <div class="ec-line">
+            <div class="code"><span class="indent"><span style="color:#D6DEEB"> </span></span><span
+                    style="color:#D6DEEB">x </span><span style="color:#C792EA">+=</span><span style="color:#D6DEEB">
+                    dx</span></div>
+        </div>
+        <div class="ec-line">
+            <div class="code"><span class="indent"><span style="color:#D6DEEB"> </span></span><span
+                    style="color:#D6DEEB">y </span><span style="color:#C792EA">+=</span><span style="color:#D6DEEB">
+                    dy</span></div>
+        </div>
+        <div class="ec-line">
+            <div class="code"></div>
+        </div>
+        <div class="ec-line">
+            <div class="code"><span class="indent"> </span><span style="color:#C792EA">if</span><span
+                    style="color:#D6DEEB"> x </span><span style="color:#C792EA">&lt;=</span><span style="color:#D6DEEB">
+                </span><span style="color:#F78C6C">0</span><span style="color:#D6DEEB"> </span><span
+                    style="color:#C792EA">or</span><span style="color:#D6DEEB"> x </span><span
+                    style="color:#C792EA">+</span><span style="color:#D6DEEB"> </span><span
+                    style="color:#82AAFF">DVD_W</span><span style="color:#D6DEEB"> </span><span
+                    style="color:#C792EA">&gt;=</span><span style="color:#D6DEEB"> gint.</span><span
+                    style="color:#82AAFF">DWIDTH</span><span style="color:#D6DEEB">:</span></div>
+        </div>
+        <div class="ec-line">
+            <div class="code"><span class="indent"><span style="color:#D6DEEB"> </span></span><span
+                    style="color:#D6DEEB">dx </span><span style="color:#C792EA">=</span><span style="color:#D6DEEB">
+                </span><span style="color:#C792EA">-</span><span style="color:#D6DEEB">dx</span></div>
+        </div>
+        <div class="ec-line">
+            <div class="code"><span class="indent"> </span><span style="color:#C792EA">if</span><span
+                    style="color:#D6DEEB"> y </span><span style="color:#C792EA">&lt;=</span><span style="color:#D6DEEB">
+                </span><span style="color:#F78C6C">0</span><span style="color:#D6DEEB"> </span><span
+                    style="color:#C792EA">or</span><span style="color:#D6DEEB"> y </span><span
+                    style="color:#C792EA">+</span><span style="color:#82AAFF">DVD_H</span><span style="color:#D6DEEB">
+                </span><span style="color:#C792EA">&gt;=</span><span style="color:#D6DEEB"> gint.</span><span
+                    style="color:#82AAFF">DHEIGHT</span><span style="color:#D6DEEB">:</span></div>
+        </div>
+        <div class="ec-line">
+            <div class="code"><span class="indent"><span style="color:#D6DEEB"> </span></span><span
+                    style="color:#D6DEEB">dy </span><span style="color:#C792EA">=</span><span style="color:#D6DEEB">
+                </span><span style="color:#C792EA">-</span><span style="color:#D6DEEB">dy</span></div>
+        </div>
+        <div class="ec-line">
+            <div class="code"></div>
+        </div>
+        <div class="ec-line">
+            <div class="code"><span class="indent"><span style="color:#D6DEEB"> </span></span><span
+                    style="color:#D6DEEB">ev </span><span style="color:#C792EA">=</span><span style="color:#D6DEEB">
+                    gint.</span><span style="color:#B2CCD6">pollevent</span><span style="color:#D6DEEB">()</span></div>
+        </div>
+        <div class="ec-line">
+            <div class="code"><span class="indent"> </span><span style="color:#C792EA">if</span><span
+                    style="color:#D6DEEB"> ev.type </span><span style="color:#C792EA">==</span><span
+                    style="color:#D6DEEB"> gint.</span><span style="color:#82AAFF">KEYEV_DOWN</span><span
+                    style="color:#D6DEEB"> </span><span style="color:#C792EA">and</span><span style="color:#D6DEEB">
+                    ev.key </span><span style="color:#C792EA">==</span><span style="color:#D6DEEB"> gint.</span><span
+                    style="color:#82AAFF">KEY_EXIT</span><span style="color:#D6DEEB">:</span></div>
+        </div>
+        <div class="ec-line">
+            <div class="code"><span class="indent"> </span><span style="color:#C792EA">break</span></div>
+        </div>
+    </template>
+
+    <script>
+        const canvas = document.getElementById('screen');
+        const ctx = canvas.getContext('2d', { alpha: false });
+
+        // --- Constants & Config ---
+        const DWIDTH = 320;
+        const DHEIGHT = 528;
+        const DVD_W = 23;
+        const DVD_H = 16;
+
+        // DVD Logo Data
+        const DVD = [
+            "                        ",
+            "   ####    ####         ",
+            "  #        #    #        ",
+            "  #        #    #        ",
+            "  #        ######   ### ",
+            "  #        #             ",
+            "  #        #             ",
+            "   ###     #             ",
+            "                        ",
+            "  ####    #####  #    #  ",
+            "  #    #  #       #    #  ",
+            "  #    #  #       #    #  ",
+            "  #    #  #####   #    #  ",
+            "  #    #  #        # #    ",
+            "  #    #  #        # #    ",
+            "  ####    #####     #     ",
+        ];
+
+        // State
+        let x = 50, y = 50;
+        let dx = 2, dy = 2;
+        let bg = "#f4f4f5"; // Started as White in code
+        let fg = "#1f2325"; // Started as Black in code
+        let isSimulating = false;
+
+        // --- Drawing Logic ---
+
+        function draw_logo(posX, posY, color) {
+            ctx.fillStyle = color;
+            for (let r = 0; r < DVD_H; r++) {
+                const row = DVD[r];
+                for (let c = 0; c < DVD_W; c++) {
+                    const px = posX + c;
+                    const py = posY + r;
+                    if (px >= 0 && px < DWIDTH && py >= 0 && py < DHEIGHT) {
+                        const pixel = row[c];
+                        if (pixel === '#') ctx.fillRect(px, py, 1, 1);
+                    }
+                }
+            }
+        }
+
+        function clearScreen() {
+            ctx.fillStyle = bg;
+            ctx.fillRect(0, 0, DWIDTH, DHEIGHT);
+        }
+
+        function staticDraw() {
+            clearScreen();
+            draw_logo(x, y, fg);
+        }
+
+        function animationLoop() {
+            if (!isSimulating) return;
+
+            // Physics
+            x += dx;
+            y += dy;
+
+            if (x <= 0 || x + DVD_W >= DWIDTH) dx = -dx;
+            if (y <= 0 || y + DVD_H >= DHEIGHT) dy = -dy;
+
+            clearScreen();
+            draw_logo(Math.floor(x), Math.floor(y), fg);
+
+            requestAnimationFrame(animationLoop);
+        }
+
+        // --- Typing Simulation ---
+
+        const codePanel = document.getElementById('code-content');
+        const template = document.getElementById('code-template');
+        // Convert template content to array of line elements
+        const lines = Array.from(template.content.children).filter(n => n.nodeType === 1);
+        let currentLineIndex = 0;
+
+        function typeLine() {
+            if (currentLineIndex >= lines.length) {
+                // Restart after 60 seconds
+                setTimeout(restartTutorial, 60000);
+                return;
+            }
+
+            const lineNode = lines[currentLineIndex].cloneNode(true);
+
+            // Handle triggers from the source
+            const codeInner = lineNode.querySelector('.code');
+            const trigger = codeInner ? codeInner.getAttribute('data-trigger') : null;
+
+            // Append with cursor effect
+            lineNode.classList.add('cursor');
+            if (currentLineIndex > 0) {
+                // Remove cursor from previous line
+                // Check if previous sibling exists just in case
+                if (codePanel.children[currentLineIndex - 1]) {
+                    codePanel.children[currentLineIndex - 1].classList.remove('cursor');
+                }
+            }
+
+            codePanel.appendChild(lineNode);
+
+            // Auto scroll
+            codePanel.parentElement.scrollTop = codePanel.parentElement.scrollHeight;
+
+            currentLineIndex++;
+
+            // Process Trigger
+            let delay = 100; // Normal typing speed (fast line by line)
+
+            if (trigger === 'init') {
+                // Execute Static Draw
+                staticDraw();
+                delay = 1000; // Pause after init to show result
+            } else if (trigger === 'loop') {
+                // Wait a bit then start animation
+                isSimulating = true;
+                requestAnimationFrame(animationLoop);
+                delay = 500;
+            }
+
+            // Next line
+            setTimeout(typeLine, delay);
+        }
+
+        function restartTutorial() {
+            // Reset State
+            isSimulating = false;
+            x = 50;
+            y = 50;
+            dx = 2;
+            dy = 2;
+            currentLineIndex = 0;
+
+            // Clear Code Panel
+            codePanel.innerHTML = '';
+
+            // Reset Screen
+            clearScreen();
+
+            // Start typing again
+            setTimeout(typeLine, 500);
+        }
+
+        // Start
+        // Initialize background
+        clearScreen();
+        // Start typing
+        setTimeout(typeLine, 500);
+
+    </script>
+</body>
+
+</html>

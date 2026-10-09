@@ -1,0 +1,361 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" 0 content="width=device-width, initial-scale=1.0">
+    <title>Python Install Guide | Python on ClassPad II</title>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Archivo+Black&family=Poppins:wght@300;400;500;600;700&display=swap"
+        rel="stylesheet">
+    <style>
+        :root {
+            --cp-white: #f4f4f5;
+            --cp-text: #a1a1aa;
+            --cp-bg: #1f2325;
+            --cp-accent: #00dc68;
+            --cp-accent-hover: #2bfd87;
+            --cp-disabled: #3f3f46;
+            --cp-text-black: #003719;
+            --cp-dark: #18181b;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Poppins', Arial, Helvetica, sans-serif;
+            background-color: var(--cp-bg);
+            color: var(--cp-white);
+            line-height: 1.6;
+        }
+
+        h1,
+        h2,
+        h3 {
+            font-family: 'Archivo Black', Arial, Helvetica, sans-serif;
+            font-weight: 900;
+            line-height: 1.2;
+        }
+
+        .container {
+            width: 100%;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 1rem;
+        }
+
+        /* Header */
+        header {
+            padding: 1.5rem 0;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .header-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            font-size: 1.5rem;
+            font-weight: 700;
+            text-decoration: none;
+            color: var(--cp-white);
+        }
+
+        .logo span {
+            color: var(--cp-accent);
+        }
+
+        .back-button {
+            display: flex;
+            align-items: center;
+            color: var(--cp-text);
+            text-decoration: none;
+            font-weight: 500;
+            transition: color 0.3s ease;
+        }
+
+        .back-button:hover {
+            color: var(--cp-white);
+        }
+
+        .back-button svg {
+            margin-right: 0.5rem;
+        }
+
+        /* Main Content */
+        main {
+            padding: 3rem 0;
+        }
+
+        .page-header {
+            text-align: center;
+            margin-bottom: 3rem;
+        }
+
+        .page-header h1 {
+            font-size: 2.5rem;
+            margin-bottom: 1rem;
+        }
+
+        .page-header h1 span {
+            color: var(--cp-accent);
+        }
+
+        .page-header p {
+            font-size: 1.2rem;
+            color: var(--cp-text);
+            max-width: 700px;
+            margin: 0 auto;
+        }
+
+        /* Steps */
+        .steps {
+            display: flex;
+            flex-direction: column;
+            gap: 2rem;
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        .step {
+            display: flex;
+            align-items: flex-start;
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 1rem;
+            padding: 2rem;
+            position: relative;
+        }
+
+        .step-number {
+            width: 3rem;
+            height: 3rem;
+            background: var(--cp-accent);
+            color: var(--cp-text-black);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+            font-weight: 700;
+            margin-right: 1.5rem;
+            flex-shrink: 0;
+        }
+
+        .step-content {
+            flex: 1;
+        }
+
+        .step-title {
+            font-size: 1.3rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .step-subtitle {
+            color: var(--cp-text);
+            margin-bottom: 1rem;
+            line-height: 1.6;
+        }
+
+        .step-arrow {
+            display: flex;
+            justify-content: center;
+            margin: 1rem 0;
+        }
+
+        .step-arrow svg {
+            opacity: 0.3;
+        }
+
+        /* Info Message */
+        .info-message {
+            text-align: center;
+            color: var(--cp-text);
+            margin-top: 3rem;
+            font-size: 0.9rem;
+        }
+
+        .info-message a {
+            color: var(--cp-accent);
+            text-decoration: none;
+        }
+
+        .info-message a:hover {
+            text-decoration: underline;
+        }
+
+        /* Footer */
+        footer {
+            padding: 2rem 0;
+            text-align: center;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            color: var(--cp-text);
+            font-size: 0.9rem;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .page-header h1 {
+                font-size: 2rem;
+            }
+
+            .page-header p {
+                font-size: 1rem;
+            }
+
+            .step {
+                padding: 1.5rem;
+            }
+
+            .step-number {
+                width: 2.5rem;
+                height: 2.5rem;
+                font-size: 1.2rem;
+                margin-right: 1rem;
+            }
+
+            .step-title {
+                font-size: 1.1rem;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .header-content {
+                flex-direction: column;
+                gap: 1rem;
+            }
+
+            .page-header h1 {
+                font-size: 1.8rem;
+            }
+
+            .step {
+                flex-direction: column;
+            }
+
+            .step-number {
+                margin-bottom: 1rem;
+            }
+        }
+    </style>
+    <script src="https://analytics.ahrefs.com/analytics.js" data-key="Kb2nywKkyR+dD+Av2GmerQ" async></script>
+</head>
+
+<body>
+    <header>
+        <div class="container">
+            <div class="header-content">
+                <a href="/" class="logo">ClassPad<span>.Dev</span></a>
+                <a href="/python" class="back-button">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none"
+                        stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <line x1="19" y1="12" x2="5" y2="12"></line>
+                        <polyline points="12 19 5 12 12 5"></polyline>
+                    </svg>
+                    Back to Python
+                </a>
+            </div>
+        </div>
+    </header>
+
+    <main>
+        <div class="container">
+            <div class="page-header">
+                <h1>Your Classpad is <span>Python ready</span></h1>
+                <p>Follow these simple steps to get Python running on your ClassPad II</p>
+            </div>
+
+            <div class="steps">
+                <div class="step">
+                    <div class="step-number">1</div>
+                    <div class="step-content">
+                        <h3 class="step-title">Copy PythonExtra-hh2.bin to your calculator</h3>
+                        <p class="step-subtitle">Copy the PythonExtra-hh2.bin file to the root of your calculator's
+                            storage, next to the run.bin file. Also copy any games and apps you want to run to the
+                            appropriate folders.</p>
+                    </div>
+                </div>
+
+                <div class="step-arrow">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="41" height="30" viewBox="0 0 41 30" fill="none">
+                        <path
+                            d="M8.25 19C7.69772 19 7.25 19.4477 7.25 20C7.25 20.5523 7.69772 21 8.25 21V19ZM32.9571 20.7071C33.3476 20.3166 33.3476 19.6834 32.9571 19.2929L26.5931 12.9289C26.2026 12.5384 25.5695 12.5384 25.1789 12.9289C24.7884 13.3195 24.7884 13.9526 25.1789 14.3431L30.8358 20L25.1789 25.6569C24.7884 26.0474 24.7884 26.6805 25.1789 27.0711C25.5695 27.4616 26.2026 27.4616 26.5931 27.0711L32.9571 20.7071ZM8.25 21H32.25V19H8.25V21Z"
+                            fill="#D0DBE3"></path>
+                    </svg>
+                </div>
+
+                <div class="step">
+                    <div class="step-number">2</div>
+                    <div class="step-content">
+                        <h3 class="step-title">Launch Hollyhock</h3>
+                        <p class="step-subtitle">Go to the Settings menu, click the System menu, and select "Hollyhock
+                            Launcher". Then select "PythonExtra" from the list and click "Run".</p>
+                    </div>
+                </div>
+
+                <div class="step-arrow">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="41" height="30" viewBox="0 0 41 30" fill="none">
+                        <path
+                            d="M8.25 19C7.69772 19 7.25 19.4477 7.25 20C7.25 20.5523 7.69772 21 8.25 21V19ZM32.9571 20.7071C33.3476 20.3166 33.3476 19.6834 32.9571 19.2929L26.5931 12.9289C26.2026 12.5384 25.5695 12.5384 25.1789 12.9289C24.7884 13.3195 24.7884 13.9526 25.1789 14.3431L30.8358 20L25.1789 25.6569C24.7884 26.0474 24.7884 26.6805 25.1789 27.0711C25.5695 27.4616 26.2026 27.4616 26.5931 27.0711L32.9571 20.7071ZM8.25 21H32.25V19H8.25V21Z"
+                            fill="#D0DBE3"></path>
+                    </svg>
+                </div>
+
+                <div class="step">
+                    <div class="step-number">3</div>
+                    <div class="step-content">
+                        <h3 class="step-title">Enjoy Python</h3>
+                        <p class="step-subtitle">Find where you put the game or app on your calculator and run it. Start
+                            exploring the power of Python on your ClassPad II!</p>
+                    </div>
+                </div>
+            </div>
+
+            <p class="info-message">
+                If you need help with the installation, please refer to our <a
+                    href="/wiki/python/installation-guide">detailed installation guide</a> or <a
+                    href="https://discord.gg/knpcNJTzpd">join our Discord community</a>.
+            </p>
+        </div>
+    </main>
+
+    <footer>
+        <div class="container">
+            <p>ClassPad.Dev - Hollyhock for fx-CP400</p>
+            <p class="m-0 text-muted me-auto small">ClassPad.Dev is a community project not affiliated with
+                Casio. <br>
+                The programs and other online content on ClassPad.Dev remain the property of their authors and
+                may be subject to licenses or copyrights.<br>
+                CASIO is a registered trademark of CASIO Computer Co., Ltd. in Japan.</p>
+
+        </div>
+    </footer>
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const urlParams = new URLSearchParams(window.location.search);
+            const version = urlParams.get('version');
+
+            if (version && /^[a-zA-Z0-9_.-]+$/.test(version)) {
+                const targetString = "PythonExtra-hh2.bin";
+
+                // Replace in the whole body to cover titles and paragraphs
+                // Doing a node walk would be safer for complex apps, but for this static content innerHTML replace is acceptable provided the input is sanitized
+                // Using a walker to be safe and precise
+                const walker = document.createTreeWalker(document.body, NodeFilter.SHOW_TEXT, null, false);
+                let node;
+                while (node = walker.nextNode()) {
+                    if (node.nodeValue.includes(targetString)) {
+                        node.nodeValue = node.nodeValue.replace(new RegExp(targetString, 'g'), version);
+                    }
+                }
+            }
+        });
+    </script>
+</body>
+
+</html>

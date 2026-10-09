@@ -1,0 +1,449 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ClassPad Emulator | Python on ClassPad II</title>
+    <meta itemprop="image"
+        content="https://res.cloudinary.com/s3ansh33p/image/upload/fl_lossy,f_auto/v1640786848/Classpad/classspad_2_grande_asfypp.webp">
+    <meta property="og:url" content="https://classpaddev.github.io/python/">
+    <meta property="og:type" content="website">
+    <meta property="og:title" content="Python ClassPad Emulator">
+    <meta property="og:description" content="Python ClassPad Emulator for the Classpad fx-CP400">
+    <meta property="og:image"
+        content="https://res.cloudinary.com/s3ansh33p/image/upload/fl_lossy,f_auto/v1640786848/Classpad/classspad_2_grande_asfypp.webp">
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="Classpad Dev">
+    <meta name="twitter:description" content="Python ClassPad Emulator for the Classpad fx-CP400">
+    <meta name="twitter:image"
+        content="https://res.cloudinary.com/s3ansh33p/image/upload/fl_lossy,f_auto/v1640786848/Classpad/classspad_2_grande_asfypp.webp">
+    <meta name="description" content="Python ClassPad Emulator for the Classpad fx-CP400" />
+    <meta name="author" content="ClassPadDev Team" />
+    <meta name="google-site-verification" content="XZl64GJFi9Ga4ctg3f_tQwNCwTmpFj70GKCxNVgqOk4" />
+    <link href="https://fonts.googleapis.com/css2?family=Archivo+Black&family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Archivo+Black&family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --cp-white: #f4f4f5;
+            --cp-text: #a1a1aa;
+            --cp-bg: #1f2325;
+            --cp-accent: #00dc68;
+            --cp-accent-hover: #2bfd87;
+            --cp-disabled: #3f3f46;
+            --cp-text-black: #003719;
+            --cp-dark: #18181b;
+            --cp-blue: #0c66e9;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Poppins', Arial, Helvetica, sans-serif;
+            background-color: var(--cp-bg);
+            color: var(--cp-white);
+            line-height: 1.6;
+        }
+
+        h1, h2, h3 {
+            font-family: 'Archivo Black', Arial, Helvetica, sans-serif;
+            font-weight: 900;
+            line-height: 1.2;
+        }
+
+        .container {
+            width: 100%;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 1rem;
+        }
+
+        /* Header */
+        header {
+            padding: 1.5rem 0;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .header-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            font-size: 1.5rem;
+            font-weight: 700;
+            text-decoration: none;
+            color: var(--cp-white);
+        }
+
+        .logo span {
+            color: var(--cp-accent);
+        }
+
+        .back-button {
+            display: flex;
+            align-items: center;
+            color: var(--cp-text);
+            text-decoration: none;
+            font-weight: 500;
+            transition: color 0.3s ease;
+        }
+
+        .back-button:hover {
+            color: var(--cp-white);
+        }
+
+        .back-button svg {
+            margin-right: 0.5rem;
+        }
+
+        /* Main Content */
+        main {
+            padding: 3rem 0;
+        }
+
+        .page-header {
+            text-align: center;
+            margin-bottom: 3rem;
+        }
+
+        .page-header h1 {
+            font-size: 2.5rem;
+            margin-bottom: 1rem;
+        }
+
+        .page-header h1 span {
+            color: var(--cp-accent);
+        }
+
+        .page-header p {
+            font-size: 1.2rem;
+            color: var(--cp-text);
+            max-width: 700px;
+            margin: 0 auto;
+        }
+
+        /* Paths */
+        .paths {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(500px, 1fr));
+            gap: 2rem;
+            margin-bottom: 3rem;
+        }
+
+        .path-card {
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 1rem;
+            padding: 2rem;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .path-card:hover {
+            transform: translateY(-5px);
+            background: rgba(255, 255, 255, 0.08);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
+        }
+
+        .path-icon {
+            width: 4rem;
+            height: 4rem;
+            background: var(--cp-accent);
+            border-radius: 1rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 1.5rem;
+        }
+
+        .path-icon svg {
+            width: 2rem;
+            height: 2rem;
+            color: var(--cp-text-black);
+        }
+
+        .path-title {
+            font-size: 1.5rem;
+            margin-bottom: 1rem;
+        }
+
+        .path-description {
+            color: var(--cp-text);
+            margin-bottom: 1.5rem;
+        }
+
+        .steps {
+            margin: 1.5rem 0;
+        }
+
+        .step {
+            display: flex;
+            align-items: flex-start;
+            margin-bottom: 1rem;
+        }
+
+        .step-number {
+            width: 1.8rem;
+            height: 1.8rem;
+            background: rgba(0, 220, 104, 0.2);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.9rem;
+            font-weight: 600;
+            margin-right: 1rem;
+            flex-shrink: 0;
+            color: var(--cp-accent);
+        }
+
+        .step-text {
+            color: var(--cp-text);
+            line-height: 1.5;
+        }
+
+        .btn {
+            display: inline-block;
+            padding: 0.8rem 1.5rem;
+            border-radius: 0.5rem;
+            font-weight: 600;
+            text-decoration: none;
+            transition: all 0.3s ease;
+            border: none;
+            cursor: pointer;
+            font-size: 1rem;
+            text-align: center;
+        }
+
+        .btn-primary {
+            background: var(--cp-accent);
+            color: var(--cp-text-black);
+        }
+
+        .btn-primary:hover {
+            background: var(--cp-accent-hover);
+            transform: translateY(-2px);
+            box-shadow: 0 10px 25px rgba(0, 220, 104, 0.3);
+        }
+
+        .btn-secondary {
+            background: transparent;
+            color: var(--cp-white);
+            border: 2px solid rgba(255, 255, 255, 0.2);
+        }
+
+        .btn-secondary:hover {
+            background: rgba(255, 255, 255, 0.1);
+            transform: translateY(-2px);
+        }
+
+        /* Quick Test Card */
+        .quick-test {
+            background: linear-gradient(135deg, rgba(12, 102, 233, 0.1) 0%, rgba(0, 220, 104, 0.1) 100%);
+            border-radius: 1rem;
+            padding: 2rem;
+            text-align: center;
+            margin: 3rem 0;
+        }
+
+        .quick-test-icon {
+            width: 3rem;
+            height: 3rem;
+            background: var(--cp-accent);
+            border-radius: 0.75rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 1.5rem;
+        }
+
+        .quick-test-icon svg {
+            width: 1.5rem;
+            height: 1.5rem;
+            color: var(--cp-text-black);
+        }
+
+        .quick-test h2 {
+            font-size: 1.8rem;
+            margin-bottom: 1rem;
+        }
+
+        .quick-test p {
+            color: var(--cp-text);
+            margin-bottom: 1.5rem;
+            max-width: 600px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        /* Footer */
+        footer {
+            padding: 2rem 0;
+            text-align: center;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            color: var(--cp-text);
+            font-size: 0.9rem;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .page-header h1 {
+                font-size: 2rem;
+            }
+
+            .page-header p {
+                font-size: 1rem;
+            }
+
+            .paths {
+                grid-template-columns: 1fr;
+            }
+
+            .path-card {
+                padding: 1.5rem;
+            }
+
+            .path-title {
+                font-size: 1.3rem;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .header-content {
+                flex-direction: column;
+                gap: 1rem;
+            }
+
+            .page-header h1 {
+                font-size: 1.8rem;
+            }
+
+            .btn {
+                display: block;
+                width: 100%;
+                margin-bottom: 1rem;
+            }
+        }
+    </style>
+    <script src="https://analytics.ahrefs.com/analytics.js" data-key="Kb2nywKkyR+dD+Av2GmerQ" async></script>
+</head>
+<body>
+    <header>
+        <div class="container">
+            <div class="header-content">
+                <a href="/" class="logo">ClassPad<span>.Dev</span></a>
+                <a href="/python" class="back-button">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <line x1="19" y1="12" x2="5" y2="12"></line>
+                        <polyline points="12 19 5 12 12 5"></polyline>
+                    </svg>
+                    Back to Python
+                </a>
+            </div>
+        </div>
+    </header>
+
+    <main>
+        <div class="container">
+            <div class="page-header">
+                <h1>ClassPad <span class="dot">Emulator</span></h1>
+                <p>Develop and test your Python programs with our ClassPad screen emulator</p>
+            </div>
+
+            <div class="paths">
+                <div class="path-card">
+                    <div class="path-icon">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <circle cx="12" cy="12" r="10"></circle>
+                            <line x1="2" y1="12" x2="22" y2="12"></line>
+                            <path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"></path>
+                        </svg>
+                    </div>
+                    <h3 class="path-title">GitHub Codespaces (Recommended)</h3>
+                    <p class="path-description">Get started instantly with our pre-configured online development environment. No local setup required!</p>
+                    
+                    <div class="steps">
+                        <div class="step">
+                            <div class="step-number">1</div>
+                            <div class="step-text">Sign in to your GitHub account</div>
+                        </div>
+                        <div class="step">
+                            <div class="step-number">2</div>
+                            <div class="step-text">Navigate to the Python template repository</div>
+                        </div>
+                        <div class="step">
+                            <div class="step-number">3</div>
+                            <div class="step-text">Click "Code" and select "Open with Codespaces"</div>
+                        </div>
+                        <div class="step">
+                            <div class="step-number">4</div>
+                            <div class="step-text">Create a new codespace - everything is pre-configured!</div>
+                        </div>
+                    </div>
+                    
+                    <a href="https://classpaddev.github.io/wiki/python/introduction/#instant-start-with-codespaces" class="btn btn-primary">Quick Start</a>
+                </div>
+
+                <div class="path-card">
+                    <div class="path-icon">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M12 2L2 7l10 5 10-5-10-5z"></path>
+                            <path d="M2 17l10 5 10-5"></path>
+                            <path d="M2 12l10 5 10-5"></path>
+                        </svg>
+                    </div>
+                    <h3 class="path-title">Local Development</h3>
+                    <p class="path-description">Set up the emulator on your own computer for full control and offline development.</p>
+                    
+                    <div class="steps">
+                        <div class="step">
+                            <div class="step-number">1</div>
+                            <div class="step-text">Install Python 3.8 or higher on your computer</div>
+                        </div>
+                        <div class="step">
+                            <div class="step-number">2</div>
+                            <div class="step-text">Install pygame library: <code>pip install pygame</code></div>
+                        </div>
+                        <div class="step">
+                            <div class="step-number">3</div>
+                            <div class="step-text">Clone the Python template repository</div>
+                        </div>
+                        <div class="step">
+                            <div class="step-number">4</div>
+                            <div class="step-text">Open the project in VS Code and start coding!</div>
+                        </div>
+                    </div>
+                    
+                    <a href="https://github.com/ClasspadDev/pythonextra-template" class="btn btn-secondary">Get Template</a>
+                </div>
+            </div>
+
+            <div class="quick-test">
+                <div class="quick-test-icon">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"></polygon>
+                    </svg>
+                </div>
+                <h2>Quick Test Without Installation</h2>
+                <p>Want to test your Python drawing code without installing anything? Try our online Python Extra REPL with built-in ClassPad screen emulator.</p>
+                <a href="https://therainbowphoenix.github.io/python-extra-repl/" class="btn btn-primary">Try Online REPL</a>
+            </div>
+        </div>
+    </main>
+
+    <footer>
+        <div class="container">
+            <p>ClassPad.Dev - Hollyhock for fx-CP400</p>
+            <p class="m-0 text-muted me-auto small">ClassPad.Dev is a community project not affiliated with
+                Casio. <br>
+                The programs and other online content on ClassPad.Dev remain the property of their authors and
+                may be subject to licenses or copyrights.<br>
+                CASIO is a registered trademark of CASIO Computer Co., Ltd. in Japan.</p>
+        
+        </div>
+    </footer>
+</body>
+</html>

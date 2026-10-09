@@ -1,0 +1,1181 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Python on ClassPad II | ClassPad Dev</title>
+    <meta itemprop="image"
+        content="https://res.cloudinary.com/s3ansh33p/image/upload/fl_lossy,f_auto/v1640786848/Classpad/classspad_2_grande_asfypp.webp">
+    <meta property="og:url" content="https://classpaddev.github.io/python/">
+    <meta property="og:type" content="website">
+    <meta property="og:title" content="Python on ClassPad II">
+    <meta property="og:description" content="Python for the Classpad fx-CP400">
+    <meta property="og:image"
+        content="https://res.cloudinary.com/s3ansh33p/image/upload/fl_lossy,f_auto/v1640786848/Classpad/classspad_2_grande_asfypp.webp">
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="Classpad Dev">
+    <meta name="twitter:description" content="Python for the Classpad fx-CP400">
+    <meta name="twitter:image"
+        content="https://res.cloudinary.com/s3ansh33p/image/upload/fl_lossy,f_auto/v1640786848/Classpad/classspad_2_grande_asfypp.webp">
+    <meta name="description" content="Python for the Classpad fx-CP400" />
+    <meta name="author" content="ClassPadDev Team" />
+    <meta name="google-site-verification" content="XZl64GJFi9Ga4ctg3f_tQwNCwTmpFj70GKCxNVgqOk4" />
+    <link
+        href="https://fonts.googleapis.com/css2?family=Archivo+Black&family=Poppins:wght@300;400;500;600;700&display=swap"
+        rel="stylesheet">
+    <style>
+        :root {
+            --cp-white: #f4f4f5;
+            --cp-text: #a1a1aa;
+            --cp-bg: #1f2325;
+            --cp-accent: #00dc68;
+            --cp-accent-hover: #2bfd87;
+            --cp-disabled: #3f3f46;
+            --cp-text-black: #003719;
+            --cp-dark: #18181b;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Poppins', Arial, Helvetica, sans-serif;
+            background-color: var(--cp-bg);
+            color: var(--cp-white);
+            line-height: 1.6;
+        }
+
+        h1,
+        h2,
+        h3 {
+            font-family: 'Archivo Black', Arial, Helvetica, sans-serif;
+            font-weight: 900;
+            line-height: 1.2;
+        }
+
+        .container {
+            width: 100%;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 1rem;
+        }
+
+        /* Hero Section */
+        .hero {
+            position: relative;
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            padding: 4rem 0;
+            background: linear-gradient(135deg, rgba(0, 0, 0, 0.9) 0%, rgba(31, 35, 37, 0.9) 100%);
+            overflow: hidden;
+        }
+
+        .hero::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-image: url('https://res.cloudinary.com/s3ansh33p/image/upload/fl_lossy,f_auto,c_scale,w_1920/v1640797745/Classpad/20211229_180653_vvwkat.webp');
+            background-size: cover;
+            background-position: center;
+            opacity: 0.1;
+            z-index: -1;
+        }
+
+        .hero-content {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 3rem;
+            align-items: center;
+        }
+
+        .hero-text {
+            padding-right: 1rem;
+        }
+
+        .badge {
+            display: inline-block;
+            padding: 0.5rem 1rem;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 2rem;
+            font-size: 0.875rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 1.5rem;
+        }
+
+        .hero h1 {
+            font-size: 3rem;
+            margin-bottom: 1.5rem;
+            letter-spacing: -1px;
+        }
+
+        .hero h1 .python-text {
+            color: var(--cp-accent);
+        }
+
+        .hero p {
+            font-size: 1.1rem;
+            color: var(--cp-text);
+            margin-bottom: 2rem;
+            line-height: 1.7;
+        }
+
+        .btn {
+            display: inline-block;
+            padding: 1rem 2rem;
+            border-radius: 0.5rem;
+            font-weight: 600;
+            text-decoration: none;
+            transition: all 0.3s ease;
+            border: none;
+            cursor: pointer;
+            font-size: 1rem;
+            text-align: center;
+        }
+
+        .btn-primary {
+            background: var(--cp-accent);
+            color: var(--cp-text-black);
+        }
+
+        .btn-primary:hover {
+            background: var(--cp-accent-hover);
+            transform: translateY(-2px);
+            box-shadow: 0 10px 25px rgba(0, 220, 104, 0.3);
+        }
+
+        .btn-secondary {
+            background: transparent;
+            color: var(--cp-white);
+            border: 2px solid rgba(255, 255, 255, 0.2);
+            margin-left: 1rem;
+        }
+
+        .btn-secondary:hover {
+            background: rgba(255, 255, 255, 0.1);
+            transform: translateY(-2px);
+        }
+
+        .hero-image {
+            position: relative;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        /* Replaced img with iframe styling */
+        .cp-iframe {
+            border: 4px solid #333;
+            border-radius: 8px;
+            background: #000;
+            width: 320px;
+            height: 528px;
+            box-shadow: 0 25px 50px rgba(0, 0, 0, 0.5);
+            /* Scale down slightly if on smaller screens */
+            max-width: 100%;
+        }
+
+        .image-decoration {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+        }
+
+        .decoration-1 {
+            position: absolute;
+            top: -1rem;
+            left: -1rem;
+            width: 3rem;
+            height: 3rem;
+            background: var(--cp-accent);
+            border-radius: 50%;
+            opacity: 0.3;
+        }
+
+        .decoration-2 {
+            position: absolute;
+            bottom: -1rem;
+            right: -1rem;
+            width: 4rem;
+            height: 4rem;
+            background: linear-gradient(45deg, #0c66e9, #00dc68);
+            border-radius: 50%;
+            opacity: 0.2;
+        }
+
+        /* Section */
+        .section {
+            padding: 4rem 0;
+        }
+
+        .section-header {
+            text-align: center;
+            max-width: 800px;
+            margin: 0 auto 3rem;
+        }
+
+        .section-title {
+            font-size: 2rem;
+            margin-bottom: 1rem;
+        }
+
+        .section-subtitle {
+            font-size: 1.1rem;
+            color: var(--cp-text);
+            margin-bottom: 1rem;
+        }
+
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+        }
+
+        .feature-card {
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 1rem;
+            padding: 2rem;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .feature-card:hover {
+            transform: translateY(-5px);
+            background: rgba(255, 255, 255, 0.08);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
+        }
+
+        .feature-icon {
+            width: 3rem;
+            height: 3rem;
+            background: var(--cp-accent);
+            border-radius: 0.75rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 1.5rem;
+        }
+
+        .feature-title {
+            font-size: 1.5rem;
+            margin-bottom: 1rem;
+        }
+
+        .feature-description {
+            color: var(--cp-text);
+            margin-bottom: 1.5rem;
+        }
+
+        .feature-link {
+            color: var(--cp-accent);
+            text-decoration: none;
+            font-weight: 600;
+            display: inline-flex;
+            align-items: center;
+        }
+
+        .feature-link:hover {
+            text-decoration: underline;
+        }
+
+        /* Two Column Layout */
+        .two-column {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 3rem;
+            align-items: center;
+        }
+
+        .content-text h3 {
+            font-size: 1.8rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .content-text p {
+            color: var(--cp-text);
+            margin-bottom: 1.5rem;
+            font-size: 1rem;
+        }
+
+        .performance-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 2rem 0;
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 0.5rem;
+            overflow: hidden;
+        }
+
+        .performance-table th {
+            background: rgba(0, 220, 104, 0.1);
+            padding: 1rem;
+            text-align: left;
+            font-weight: 600;
+        }
+
+        .performance-table td {
+            padding: 1rem;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .performance-table tr:last-child td {
+            border-bottom: none;
+        }
+
+        .content-image {
+            border-radius: 1rem;
+            overflow: hidden;
+            box-shadow: 0 25px 50px rgba(0, 0, 0, 0.3);
+            display: flex;
+            justify-content: center;
+            background: #111;
+            /* Fallback for transparency */
+        }
+
+        .content-image img {
+            width: 100%;
+            height: auto;
+            display: block;
+        }
+
+        /* Adjust iframe in content area */
+        .content-image .cp-iframe {
+            /* Remove border here for cleaner look inside container */
+            border: none;
+            box-shadow: none;
+        }
+
+        /* Download Section */
+        .download-section {
+            padding: 3rem 0;
+        }
+
+        .download-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+            margin-top: 2rem;
+        }
+
+        .download-card {
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 1rem;
+            padding: 2rem;
+            text-align: center;
+            transition: transform 0.3s ease;
+        }
+
+        .download-card:hover {
+            transform: translateY(-5px);
+        }
+
+        .download-icon {
+            width: 4rem;
+            height: 4rem;
+            margin: 0 auto 1.5rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2rem;
+        }
+
+        .download-title {
+            font-size: 1.3rem;
+            margin-bottom: 1rem;
+        }
+
+        .download-description {
+            color: var(--cp-text);
+            margin-bottom: 1.5rem;
+            font-size: 0.9rem;
+        }
+
+        .btn-download {
+            width: 100%;
+            padding: 0.8rem;
+        }
+
+        .btn-disabled {
+            background: var(--cp-disabled);
+            color: var(--cp-text);
+            cursor: not-allowed;
+            opacity: 0.6;
+        }
+
+        .btn-disabled:hover {
+            background: var(--cp-disabled);
+            transform: none;
+            box-shadow: none;
+        }
+
+        /* CTA Section */
+        .cta-section {
+            text-align: center;
+            padding: 4rem 2rem;
+            background: linear-gradient(135deg, rgba(12, 102, 233, 0.1) 0%, rgba(0, 220, 104, 0.1) 100%);
+            border-radius: 2rem;
+            margin: 3rem 0;
+        }
+
+        .cta-title {
+            font-size: 2rem;
+            margin-bottom: 1rem;
+        }
+
+        .cta-subtitle {
+            font-size: 1.1rem;
+            color: var(--cp-text);
+            margin-bottom: 2rem;
+            max-width: 600px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        /* Apps Table */
+        .apps-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 2rem 0;
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 0.5rem;
+            overflow: hidden;
+        }
+
+        .apps-table th {
+            background: rgba(0, 220, 104, 0.1);
+            padding: 1rem;
+            text-align: left;
+            font-weight: 600;
+        }
+
+        .apps-table td {
+            padding: 1rem;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .apps-table tr:last-child td {
+            border-bottom: none;
+        }
+
+        .apps-table a {
+            color: var(--cp-accent);
+            text-decoration: none;
+        }
+
+        .apps-table a:hover {
+            text-decoration: underline;
+        }
+
+        .apps-table tr>th:nth-child(3) {
+            min-width: 140px;
+        }
+
+        /* Footer */
+        .footer {
+            padding: 3rem 0;
+            text-align: center;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .footer-links {
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap;
+            gap: 1.5rem;
+            margin-bottom: 2rem;
+        }
+
+        .footer-link {
+            color: var(--cp-text);
+            text-decoration: none;
+            transition: color 0.3s ease;
+        }
+
+        .footer-link:hover {
+            color: var(--cp-accent);
+        }
+
+        .social-links {
+            display: flex;
+            justify-content: center;
+            gap: 1rem;
+            margin-bottom: 2rem;
+        }
+
+        .social-link {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 3rem;
+            height: 3rem;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.1);
+            color: var(--cp-white);
+            text-decoration: none;
+            transition: all 0.3s ease;
+        }
+
+        .social-link:hover {
+            background: var(--cp-accent);
+            color: var(--cp-text-black);
+            transform: translateY(-3px);
+        }
+
+        .copyright {
+            color: var(--cp-text);
+            font-size: 0.9rem;
+        }
+
+        /* Dark Section */
+        .dark-section {
+            background: rgba(0, 0, 0, 0.4);
+        }
+
+        /* Loading */
+        .loading {
+            text-align: center;
+            padding: 2rem;
+            color: var(--cp-text);
+        }
+
+        /* Responsive */
+        @media (max-width: 992px) {
+            .hero-content {
+                grid-template-columns: 1fr;
+                gap: 3rem;
+            }
+
+            .hero-text {
+                padding-right: 0;
+                text-align: center;
+            }
+
+            .hero-buttons {
+                display: flex;
+                justify-content: center;
+            }
+
+            .hero h1 {
+                font-size: 2.5rem;
+            }
+
+            .two-column {
+                grid-template-columns: 1fr;
+                gap: 2rem;
+            }
+
+            .section {
+                padding: 3rem 0;
+            }
+
+            .section-title {
+                font-size: 1.8rem;
+            }
+
+            .content-text h3 {
+                font-size: 1.6rem;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .hero {
+                padding: 3rem 0;
+                min-height: auto;
+            }
+
+            .hero h1 {
+                font-size: 2rem;
+            }
+
+            .hero p {
+                font-size: 1rem;
+            }
+
+            .btn {
+                display: block;
+                width: 100%;
+                margin-bottom: 1rem;
+            }
+
+            .btn-secondary {
+                margin-left: 0;
+            }
+
+            .hero-buttons {
+                flex-direction: column;
+                gap: 1rem;
+            }
+
+            .features-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .download-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .footer-links {
+                flex-direction: column;
+                gap: 1rem;
+            }
+
+            .section-header {
+                margin-bottom: 2rem;
+            }
+
+            .section-title {
+                font-size: 1.6rem;
+            }
+
+            .cta-title {
+                font-size: 1.6rem;
+            }
+
+            .cta-subtitle {
+                font-size: 1rem;
+            }
+
+            .apps-table {
+                font-size: 0.9rem;
+            }
+
+            .apps-table th,
+            .apps-table td {
+                padding: 0.5rem;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .container {
+                padding: 0 0.5rem;
+            }
+
+            .hero {
+                padding: 2rem 0;
+            }
+
+            .hero h1 {
+                font-size: 1.8rem;
+            }
+
+            .section {
+                padding: 2rem 0;
+            }
+
+            .section-title {
+                font-size: 1.5rem;
+            }
+
+            .feature-card,
+            .download-card {
+                padding: 1.5rem;
+            }
+
+            .cta-section {
+                padding: 2rem 1rem;
+            }
+
+            .cp-iframe {
+                transform: scale(0.8);
+                /* Scale down iframes on very small screens */
+            }
+
+        }
+
+        /* App Grid */
+        .app-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(500px, 1fr));
+            gap: 2rem;
+            margin-top: 2rem;
+        }
+
+        .app-card {
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 1rem;
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .app-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+            border-color: rgba(255, 255, 255, 0.2);
+        }
+
+        .app-header {
+            padding: 1rem;
+            background: rgba(0, 0, 0, 0.2);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+        }
+
+        .app-title {
+            margin: 0;
+            font-size: 1.1rem;
+            font-weight: 700;
+        }
+
+        .app-author {
+            font-size: 0.8rem;
+            color: var(--cp-text);
+        }
+
+        .app-body {
+            display: flex;
+            padding: 1rem;
+            gap: 1.5rem;
+            flex: 1;
+        }
+
+        .app-image {
+            width: 240px;
+            height: 396px;
+            /* Ratio close to 320x528 approx 0.75 scale */
+            background-size: cover;
+            background-position: center;
+            border-radius: 2px;
+            flex-shrink: 0;
+            background-color: #333;
+        }
+
+        .app-details {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .app-description {
+            font-size: 0.9rem;
+            color: var(--cp-text);
+            margin-bottom: 1rem;
+            flex: 1;
+            display: -webkit-box;
+            -webkit-line-clamp: 14;
+            line-clamp: 14;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+        }
+
+        .app-actions {
+            display: flex;
+            gap: 0.5rem;
+            flex-wrap: wrap;
+        }
+
+        .app-btn {
+            padding: 0.5rem 1rem;
+            font-size: 0.8rem;
+            text-align: center;
+            flex: 1;
+            min-width: 80px;
+        }
+
+        @media (max-width: 600px) {
+            .app-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .app-body {
+                flex-direction: column;
+            }
+
+            .app-image {
+                width: 100%;
+                height: 300px;
+                background-position: top center;
+            }
+        }
+    </style>
+    <script src="https://analytics.ahrefs.com/analytics.js" data-key="Kb2nywKkyR+dD+Av2GmerQ" async></script>
+</head>
+
+<body>
+    <!-- Hero Section -->
+    <section class="hero">
+        <div class="container">
+            <div class="hero-content">
+                <div class="hero-text">
+                    <span class="badge">Python for FX-CP400</span>
+                    <h1>ClassPad with <span class="python-text">Python</span> 🐍</h1>
+                    <p>It's finally time to break free from BASIC! Learn Python and build what you need, from
+                        educational tools to games. Creating amazing experiences has never been easier thanks to Python.
+                    </p>
+                    <div class="hero-buttons">
+                        <a href="#download" class="btn btn-primary">Get It Now!</a>
+                        <a href="#learn-more" class="btn btn-secondary">Learn More</a>
+                        <a href="https://classpaddev.github.io/store/?type=py" class="btn btn-secondary">Apps</a>
+                    </div>
+                </div>
+                <div class="hero-image">
+                    <div class="image-decoration" style="width: 340px; height: 560px;">
+                        <div class="decoration-1"></div>
+                        <div class="decoration-2"></div>
+                    </div>
+                    <!-- REPLACED IMAGE WITH IFRAME DEMO -->
+                    <iframe src="iframe.html" class="cp-iframe" title="Cyberspace Demo"></iframe>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Download Section -->
+    <section class="download-section" id="download">
+        <div class="container">
+            <div class="section-header">
+                <h2 class="section-title">Pick Your Edition</h2>
+                <p class="section-subtitle">Choose the Python implementation that's right for you</p>
+            </div>
+            <div class="download-grid">
+                <div class="download-card">
+                    <div class="download-icon">
+                        <svg width="32" height="32" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M12 2L2 7L12 12L22 7L12 2Z" stroke="currentColor" stroke-width="2"
+                                stroke-linecap="round" stroke-linejoin="round" />
+                            <path d="M2 17L12 22L22 17" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                                stroke-linejoin="round" />
+                            <path d="M2 12L12 17L22 12" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                                stroke-linejoin="round" />
+                        </svg>
+                    </div>
+                    <h3 class="download-title">HollyHock 2 (Latest)</h3>
+                    <p class="download-description">The stable and recommended version with full Python support and
+                        extensive library compatibility.</p>
+                    <a href="/python/install-guide" class="btn btn-primary btn-download"
+                        onclick="downloadFile('/python/PythonExtra-hh2.bin', 'PythonExtra-hh2.bin'); return false;">Download
+                        Now</a>
+                </div>
+
+                <div class="download-card">
+                    <div class="download-icon">
+                        <svg width="32" height="32" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M12 2L2 7L12 12L22 7L12 2Z" stroke="currentColor" stroke-width="2"
+                                stroke-linecap="round" stroke-linejoin="round" />
+                            <path d="M2 17L12 22L22 17" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                                stroke-linejoin="round" />
+                            <path d="M2 12L12 17L22 12" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                                stroke-linejoin="round" />
+                        </svg>
+                    </div>
+                    <h3 class="download-title">HollyHock 3 (Beta)</h3>
+                    <p class="download-description">The next-generation version with experimental features. Now
+                        available for testing.</p>
+                    <a href="/python/install-guide" class="btn btn-primary btn-download"
+                        onclick="downloadFile('/python/PythonExtra.hh3', 'PythonExtra.hh3'); return false;">Download
+                        Beta</a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Easy to Learn Section -->
+    <section class="section" id="learn-more">
+        <div class="container">
+            <div class="section-header">
+                <h2 class="section-title">Easy to Learn</h2>
+                <p class="section-subtitle">Built on the powerful Gint framework with intuitive tools</p>
+            </div>
+            <div class="two-column">
+                <div class="content-text">
+                    <h3>Learn Python the Fun Way</h3>
+                    <p>Our Python implementation for ClassPad II is designed to make programming accessible to everyone.
+                        Built on the robust Gint framework, it provides a solid foundation for both beginners and
+                        experienced developers.</p>
+                    <p>The included turtle module allows you to create stunning graphics directly on your ClassPad
+                        screen, making learning visual and engaging. Whether you're drawing geometric patterns or
+                        creating simple animations, Python on ClassPad makes it easy and fun.</p>
+                    <p>Our comprehensive wiki provides step-by-step tutorials to help you unlock the full potential of
+                        Python on your device. From basic syntax to advanced graphics programming, we've got you
+                        covered.</p>
+                    <a href="/wiki/python/introduction/" class="feature-link">Explore the Python Wiki →</a>
+                </div>
+                <div class="content-image" style="width: 660px; height: 560px;">
+                    <!-- REPLACED STATIC IMAGE WITH DVD BOUNCE DEMO -->
+                    <iframe src="tutorial.html" class="cp-iframe" style="width: 660px; height: 560px;"
+                        title="DVD Bounce Demo"></iframe>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ClassPad Emulator Section -->
+    <section class="section dark-section">
+        <div class="container">
+            <div class="two-column">
+                <div class="content-image">
+                    <img src="https://placehold.co/600x400/1f2325/00dc68?text=Emulator" alt="ClassPad Emulator">
+                </div>
+                <div class="content-text">
+                    <h3>ClassPad Emulator</h3>
+                    <p>Develop and test your Python programs on your computer before transferring them to your ClassPad.
+                        Our Python template includes a built-in ClassPad screen emulator that mirrors the actual device
+                        display.</p>
+                    <p>This powerful development tool allows you to:</p>
+                    <ul style="color: var(--cp-text); margin: 1.5rem 0; padding-left: 1.5rem;">
+                        <li style="margin-bottom: 0.5rem;">Debug your code in real-time</li>
+                        <li style="margin-bottom: 0.5rem;">Test graphics and animations</li>
+                        <li style="margin-bottom: 0.5rem;">Speed up your development workflow</li>
+                        <li>Ensure compatibility before deployment</li>
+                    </ul>
+                    <a href="/python/classpad-emulator/" class="btn btn-primary">Try the Emulator</a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Fast Performance Section -->
+    <section class="section">
+        <div class="container">
+            <div class="section-header">
+                <h2 class="section-title">Blazing Fast Performance</h2>
+                <p class="section-subtitle">Optimized for speed and efficiency</p>
+            </div>
+            <div class="two-column">
+                <div class="content-text">
+                    <h3>Lightning-Fast Execution</h3>
+                    <p>Python scripts on ClassPad II run significantly faster than Casio Basic, delivering a responsive
+                        and fluid programming experience. Our optimized Python implementation outperforms even the
+                        official Python app for fx-CG50.</p>
+
+
+                    <p>Want to make your Python programs even faster? Our performance optimization guide shows you
+                        advanced techniques to squeeze every bit of speed from your code.</p>
+                    <a href="/wiki/python/optimize/" class="feature-link">Learn Optimization Techniques →</a>
+                </div>
+
+                <table class="performance-table">
+                    <thead>
+                        <tr>
+                            <th>Test</th>
+                            <th>Official Python (fx-CG50)</th>
+                            <th>PythonExtra (ClassPad)</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>VM Speed (1M passes)</td>
+                            <td>~12 seconds</td>
+                            <td>8.9 seconds</td>
+                        </tr>
+                        <tr>
+                            <td>Shell Output (100K integers)</td>
+                            <td>~22 seconds</td>
+                            <td>11.3 seconds</td>
+                        </tr>
+                        <tr>
+                            <td>Large Integers</td>
+                            <td>~15 seconds</td>
+                            <td>8.6 seconds</td>
+                        </tr>
+                    </tbody>
+                </table>
+
+            </div>
+        </div>
+    </section>
+
+    <!-- Games and Apps Section -->
+    <section class="section">
+        <div class="container">
+            <div class="section-header">
+                <h2 class="section-title">Games & Apps</h2>
+                <p class="section-subtitle">An expanding ecosystem of Python-powered experiences</p>
+            </div>
+            <div class="features-grid">
+                <!-- Classic Games -->
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path
+                                d="M12 2C6.48 2 2 6.48 2 12C2 17.52 6.48 22 12 22C17.52 22 22 17.52 22 12C22 6.48 17.52 2 12 2Z"
+                                stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+                            <path d="M12 8V12" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                                stroke-linejoin="round" />
+                            <path d="M12 16H12.01" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                                stroke-linejoin="round" />
+                        </svg>
+                    </div>
+                    <h3 class="feature-title">Games</h3>
+                    <p class="feature-description">Enjoy Python ports of timeless classics like Snake, optimized for the
+                        ClassPad's screen and controls.</p>
+                    <a href="https://classpaddev.github.io/store/?type=py&tag=Game" class="feature-link">Browse Games →</a>
+                </div>
+
+                <!-- Educational Tools -->
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path
+                                d="M21 12C21 13.1819 20.7672 14.3522 20.3149 15.4442C19.8626 16.5361 19.1997 17.5282 18.364 18.364C17.5282 19.1997 16.5361 19.8626 15.4442 20.3149C14.3522 20.7672 13.1819 21 12 21C10.8181 21 9.64778 20.7672 8.55585 20.3149C7.46392 19.8626 6.47177 19.1997 5.63604 18.364C4.80031 17.5282 4.13738 16.5361 3.68508 15.4442C3.23279 14.3522 3 13.1819 3 12C3 9.61305 3.94821 7.32387 5.63604 5.63604C7.32387 3.94821 9.61305 3 12 3C14.3869 3 16.6761 3.94821 18.364 5.63604C20.0518 7.32387 21 9.61305 21 12Z"
+                                stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+                            <path d="M8 14C8 14 9.5 16 12 16C14.5 16 16 14 16 14" stroke="currentColor" stroke-width="2"
+                                stroke-linecap="round" stroke-linejoin="round" />
+                        </svg>
+                    </div>
+                    <h3 class="feature-title">Educational Tools</h3>
+                    <p class="feature-description">Powerful math and science applications that uses Python's
+                        computational capabilities for advanced calculations and visualizations.</p>
+                    <a href="https://classpaddev.github.io/store/?type=py&tag=Education" class="feature-link">Browse Education Apps →</a>
+                </div>
+
+                <!-- App Store -->
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M20 7L12 3L4 7M20 7L12 11M20 7V17L12 21M12 11L4 7M12 11V21M4 7V17L12 21"
+                                stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+                        </svg>
+                    </div>
+                    <h3 class="feature-title">App Store</h3>
+                    <p class="feature-description">Discover and install new programs from our official App Store
+                        repository.</p>
+                    <a href="https://classpaddev.github.io/store/type/python" class="feature-link">Browse All Apps →</a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Wiki Section -->
+    <section class="section dark-section">
+        <div class="container">
+            <div class="two-column">
+                <div class="content-text">
+                    <h3>All Your Questions Answered</h3>
+                    <p>Our comprehensive wiki covers everything you need to know about Python on ClassPad. Whether
+                        you're just getting started or looking to master advanced techniques, you'll find detailed
+                        documentation, tutorials, and examples.</p>
+                    <p>From installation guides to troubleshooting tips, from beginner tutorials to advanced programming
+                        concepts, the wiki has you covered. Explore topics like:</p>
+                    <ul style="color: var(--cp-text); margin: 1.5rem 0; padding-left: 1.5rem;">
+                        <li style="margin-bottom: 0.5rem;">Getting started with Python on ClassPad</li>
+                        <li style="margin-bottom: 0.5rem;">Graphics programming with turtle module</li>
+                        <li style="margin-bottom: 0.5rem;">Creating games and interactive applications</li>
+                        <li>Optimizing performance for resource-constrained devices</li>
+                    </ul>
+                    <p style="margin: 1.5rem 0; color: var(--cp-text);">
+                        Need instant help? Try our AI assistant PythonGPT, specifically trained to answer your ClassPad
+                        Python questions. Get instant solutions, code examples, and debugging help from our intelligent
+                        assistant.
+                    </p>
+                    <a href="/wiki/python/introduction/" class="btn btn-primary">Learn More</a>
+                    <a href="/wiki/python/introduction/#need-help-while-coding" class="btn btn-secondary">Ask
+                        PythonGPT</a>
+                </div>
+                <div class="content-image" style="width: 600px; height: 400px;">
+                    <iframe src="chat-demo.html" class="cp-iframe" style="width: 100%; height: 100%; border: none;"
+                        title="Wiki Chat Demo"></iframe>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Community Section -->
+    <section class="section"
+        style="background: linear-gradient(135deg, rgba(12, 102, 233, 0.1) 0%, rgba(0, 220, 104, 0.1) 100%);">
+        <div class="container">
+            <div class="cta-section">
+                <h2 class="cta-title">Need Help?</h2>
+                <p class="cta-subtitle">Join our vibrant community of ClassPad developers and enthusiasts</p>
+                <a href="https://discord.gg/knpcNJTzpd" class="btn btn-primary"
+                    style="background: #5865F2; border-color: #5865F2; max-width: 300px; margin: 0 auto;">
+                    Join Our Discord Server
+                </a>
+                <p
+                    style="margin-top: 1.5rem; color: var(--cp-text); max-width: 600px; margin-left: auto; margin-right: auto;">
+                    Whether you're new to modding/programming or an expert, you'll find something that interests you.
+                    Get help with installation, running, or developing programs - we're here to support you!
+                </p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-links">
+                <a href="/" class="footer-link">Documentation</a>
+                <a href="https://discord.gg/knpcNJTzpd" class="footer-link">Community</a>
+                <a href="https://github.com/classpaddev" class="footer-link">GitHub</a>
+                <a href="/wiki" class="footer-link">Wiki</a>
+            </div>
+            <div class="social-links">
+                <a href="https://classpaddev.github.io/" class="social-link">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none"
+                        stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <circle cx="12" cy="12" r="10"></circle>
+                        <line x1="2" y1="12" x2="22" y2="12"></line>
+                        <path
+                            d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z">
+                        </path>
+                    </svg>
+                </a>
+                <a href="https://discord.gg/knpcNJTzpd" class="social-link">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
+                        <path
+                            d="M20.3 4.1c-1.5-.7-3.1-1.2-4.8-1.5-.2-.1-.4 0-.5.1-.1.1-.2.3-.1.5 1.7 3.3 2.1 5.7 2.1 5.7-2.5-1.3-4.3-1.6-6.1-1.6-1.3 0-2.5.3-3.7.9-.1 0-.2 0-.3.1-.1 0-.2-.1-.2-.2 0 0 .4-2.7 2.2-5.9-.1-.1-.3-.1-.4-.1-1.7.3-3.3.8-4.8 1.5-.1 0-.2.1-.2.2-.1.3-.3.9-.2 1.5.1.6.3 1.3.5 1.9.1.2.1.4.1.6-.1.6-.2 1.2-.2 1.8 0 .6.1 1.2.2 1.8 0 .2 0 .4-.1.6-.2.6-.4 1.2-.5 1.9-.1.6 0 1.2.2 1.5.1.1.2.2.4.2 1.5.7 3.1 1.2 4.8 1.5.2.1.4 0 .5-.1.1-.1.2-.3.1-.5-1.7-3.3-2.1-5.7-2.1-5.7 2.5 1.3 4.3 1.6 6.1 1.6 1.3 0 2.5-.3 3.7-.9.1 0 .2 0 .3-.1.1 0 .2.1.2.2 0 0-.4 2.7-2.2 5.9.1.1.3.1.4.1 1.7-.3 3.3-.8 4.8-1.5.1-.1.2-.2.2-.4.3-1.2.5-2.4.5-3.6 0-1.2-.2-2.4-.5-3.6-.1-.3-.2-.6-.4-.8zM8.7 14.7c-.8 0-1.4-.7-1.4-1.5s.6-1.5 1.4-1.5 1.4.7 1.4 1.5-.6 1.5-1.4 1.5zm6.6 0c-.8 0-1.4-.7-1.4-1.5s.6-1.5 1.4-1.5 1.4.7 1.4 1.5-.6 1.5-1.4 1.5z" />
+                    </svg>
+                </a>
+                <a href="https://github.com/classpaddev" class="social-link">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
+                        <path
+                            d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.18 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.66 1.65.24 2.88.12 3.18.765.84 1.23 1.905 1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.3 0 .315.225.69.825.57A12.02 12.02 0 0024 12c0-6.63-5.37-12-12-12z" />
+                    </svg>
+                </a>
+                <a href="/wiki" class="social-link">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
+                        <path d="M12 2L2 7L12 12L22 7L12 2Z" stroke="currentColor" stroke-width="2"
+                            stroke-linecap="round" stroke-linejoin="round"></path>
+                        <path d="M2 17L12 22L22 17" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                            stroke-linejoin="round"></path>
+                        <path d="M2 12L12 17L22 12" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                            stroke-linejoin="round"></path>
+                    </svg>
+                </a>
+            </div>
+
+            <p>ClassPad.Dev - Hollyhock for fx-CP400</p>
+            <p class="m-0 text-muted me-auto small">ClassPad.Dev is a community project not affiliated with
+                Casio. <br>
+                The programs and other online content on ClassPad.Dev remain the property of their authors and
+                may be subject to licenses or copyrights.<br>
+                CASIO is a registered trademark of CASIO Computer Co., Ltd. in Japan.</p>
+
+        </div>
+    </footer>
+
+    <script>
+        function downloadFile(url, saveName) {
+            // Simulate download
+            const link = document.createElement('a');
+            link.href = url;
+            link.download = saveName || 'PythonExtra.bin'; // Use provided name or fallback
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
+
+            // Redirect to install guide after a short delay with version param
+            setTimeout(() => {
+                // Encode saveName to be safe in URL
+                const version = encodeURIComponent(saveName || 'PythonExtra.bin');
+                window.location.href = '/python/install-guide?version=' + version;
+            }, 500);
+        }
+    </script>
+
+</body>
+
+</html>

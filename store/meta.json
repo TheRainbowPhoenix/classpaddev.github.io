@@ -1,0 +1,250 @@
+[
+    {
+        "id": 1,
+        "slug": "snake-game",
+        "name": "Snake Game",
+        "author": "Hollyhock Team",
+        "description": "Classic snake game",
+        "image": "/store/images/cover/Snake.png",
+        "screenshots": [
+            "/store/images/snake-game/Snake2.png",
+            "/store/images/snake-game/Snake3.png",
+            "/store/images/snake-game/Snake4.png"
+        ],
+        "downloadUrl": "https://classpaddev.github.io/first-run/apps/snake.hh3",
+        "detailsUrl": "https://github.com/ClasspadDev/hollyhock-3/blob/master/demos/snake/",
+        "format": ".hh3",
+        "tags": [
+            "Game",
+            "Classic"
+        ]
+    },
+    {
+        "id": 2,
+        "slug": "python",
+        "name": "Python",
+        "author": "Hollyhock Team",
+        "description": "The REAL snake game. Python interpreter for the Classpad II, create apps and games.",
+        "image": "https://classpaddev.github.io/python/demo1.png",
+        "screenshots": [
+            "/store/images/python/pythonExtra1.png",
+            "/store/images/python/pythonExtra2.png",
+            "/store/images/python/pythonExtra3.png",
+            "/store/images/python/pythonExtra4.png",
+            "/store/images/python/PythonExtra5.png"
+        ],
+        "downloadUrl": "https://classpaddev.github.io/python/PythonExtra.hh3",
+        "detailsUrl": "https://classpaddev.github.io/python/",
+        "format": ".hh3",
+        "tags": [
+            "Programming",
+            "Python",
+            "Game"
+        ]
+    },
+    {
+        "id": 3,
+        "slug": "cp-pong",
+        "name": "CP Pong",
+        "author": "PyCSharp",
+        "description": "A simple Ping Pong Game for the Casio FX-CP400.",
+        "image": "https://raw.githubusercontent.com/PyCSharp/CPPong-For-HHK3/refs/heads/main/image.jpg",
+        "screenshots": [
+            "/store/images/cp-pong/CPPong1.png",
+            "/store/images/cp-pong/CPPong2.png",
+            "/store/images/cp-pong/CPPong3.png"
+        ],
+        "downloadUrl": "https://github.com/PyCSharp/CPPong-For-HHK3/releases/latest/download/CPPong.hh3",
+        "detailsUrl": "https://github.com/PyCSharp/CPPong-For-HHK3",
+        "format": ".hh3",
+        "tags": [
+            "Game",
+            "Sports"
+        ]
+    },
+    {
+        "id": 4,
+        "slug": "cp-doom",
+        "name": "CP Doom",
+        "author": "QBos07",
+        "description": "A Doom source port for the Classpad II. You also need the WAD. Check the details",
+        "image": "https://classpaddev.github.io/img/doom.png",
+        "screenshots": [
+            "/store/images/cp-doom/CPDoom1.png",
+            "/store/images/cp-doom/CPDoom2.png",
+            "/store/images/cp-doom/CPDoom3.png",
+            "/store/images/cp-doom/CPDoom4.png"
+        ],
+        "downloadUrl": "https://github.com/QBos07/CPDoom/releases/download/v1.1.0/CPDoom.hh3",
+        "detailsUrl": "https://github.com/QBos07/CPDoom/",
+        "position": "0 19%",
+        "format": ".hh3",
+        "tags": [
+            "Game",
+            "FPS"
+        ]
+    },
+    {
+        "id": 5,
+        "slug": "cpboy",
+        "name": "CPBoy",
+        "author": "QBos07",
+        "description": "A Game Boy (DMG) emulator for the Classpad II. You need roms. Check the details",
+        "image": "https://classpaddev.github.io/img/gb.png",
+        "downloadUrl": "https://classpaddev.github.io/first-run/apps/CPBoy.hh3",
+        "detailsUrl": "https://github.com/QBos07/CPBoy/",
+        "position": "0 28%",
+        "format": ".hh3",
+        "tags": [
+            "Emulator",
+            "Classic"
+        ]
+    },
+    {
+        "id": 6,
+        "slug": "hex-editor",
+        "name": "Hex Editor",
+        "author": "PyCSharp",
+        "description": "A hex editor that can modify values in the RAM of the calculator.",
+        "image": "https://raw.githubusercontent.com/PyCSharp/HexEditor-For-HHK3/refs/heads/main/image.png",
+        "downloadUrl": "https://github.com/PyCSharp/CPHexEditor-For-HHK3/releases/latest/download/CPHexEditor.hh3",
+        "detailsUrl": "https://github.com/PyCSharp/CPHexEditor-For-HHK3",
+        "position": "top",
+        "format": ".hh3",
+        "tags": [
+            "Utility",
+            "System"
+        ]
+    },
+    {
+        "id": 7,
+        "slug": "cptune4",
+        "name": "CPTune4",
+        "author": "CalcLoverHK",
+        "description": "Overclocking utility for CASIO calculators.",
+        "image": "/store/images/cover/CPTune4.png",
+        "screenshots": [
+            "/store/images/cptune4/CPTuna4_BSC2.jpg",
+            "/store/images/cptune4/CPTuna4_MemoryData.jpg",
+            "/store/images/cptune4/CPTuna4_BSC.jpg"
+        ],
+        "downloadUrl": "https://git.planet-casio.com/CalcLoverHK/Xtune/releases/download/latest/CPtune4.hh3",
+        "detailsUrl": "https://git.planet-casio.com/CalcLoverHK/Xtune/releases",
+        "format": ".hh3",
+        "tags": [
+            "Utility",
+            "System"
+        ]
+    },
+    {
+        "id": 8,
+        "slug": "tetris",
+        "name": "Tetris",
+        "author": "Hollyhock Team",
+        "description": "Simple Tetris game.",
+        "image": "/store/images/cover/Tetris.png",
+        "screenshots": [
+            "/store/images/tetris/tetris2.png",
+            "/store/images/tetris/tetris3.png",
+            "/store/images/tetris/tetris4.png",
+            "/store/images/tetris/tetris5.png",
+            "/store/images/tetris/tetris6.png"
+        ],
+        "downloadUrl": "https://classpaddev.github.io/first-run/apps/tetris.hh3",
+        "detailsUrl": "https://github.com/ClasspadDev/hollyhock-3/tree/master/demos/tetris",
+        "format": ".hh3",
+        "tags": [
+            "Game",
+            "Puzzle"
+        ]
+    },
+    {
+        "id": 9,
+        "slug": "cp-flappy-bird",
+        "name": "CP Flappy Bird",
+        "author": "s3ansh33p",
+        "description": "The Flappy Bird game, to the classpad!",
+        "image": "https://raw.githubusercontent.com/TheRainbowPhoenix/CPFlappyBird/refs/heads/main/cover.png",
+        "downloadUrl": "https://github.com/TheRainbowPhoenix/CPFlappyBird/releases/download/1.0.0-v3/CPFlappyBird-Bundle.zip",
+        "detailsUrl": "https://github.com/TheRainbowPhoenix/CPFlappyBird",
+        "format": ".hh3",
+        "tags": [
+            "Game",
+            "Arcade"
+        ]
+    },
+    {
+        "id": 10,
+        "slug": "cpshell",
+        "name": "CPShell",
+        "author": "s3ansh33p",
+        "description": "A busybox-style shell interpreter for the ClassPad fx-CP400.",
+        "image": "https://raw.githubusercontent.com/TheRainbowPhoenix/CPShell/refs/heads/master/cover.png",
+        "downloadUrl": "https://github.com/TheRainbowPhoenix/CPShell/releases/download/0.1.0-v3/CPShell.zip",
+        "detailsUrl": "https://github.com/TheRainbowPhoenix/CPShell",
+        "format": ".hhk",
+        "tags": [
+            "Utility",
+            "System",
+            "Shell"
+        ]
+    },
+    {
+        "id": 11,
+        "slug": "falling-sand-sim",
+        "name": "Falling Sand Sim",
+        "author": "SPLATPLAYS",
+        "description": "A cellular automaton falling sand simulator for the Casio ClassPad / fx-CG series calculator!",
+        "downloadUrl": "https://github.com/SPLATPLAYS/Falling-Sand-Sim/releases/latest/download/FallingSandSim.hh3",
+        "detailsUrl": "https://github.com/SPLATPLAYS/Falling-Sand-Sim",
+        "format": ".hh3",
+        "tags": [
+            "Game",
+            "Simulation"
+        ]
+    },
+    {
+        "id": 12,
+        "slug": "doodlepad",
+        "name": "Doodlepad",
+        "author": "Declan-Reid",
+        "description": "A drawing app for the Casio Classpad II (fx-CP400).",
+        "image": "https://raw.githubusercontent.com/Declan-Reid/Doodlepad/master/images/v1.0.1_example.jpg",
+        "screenshots": [
+            "/store/images/doodlepad/doodlepad1.png",
+            "/store/images/doodlepad/doodlepad2.png",
+            "/store/images/doodlepad/doodlepad3.png"
+        ],
+        "downloadUrl": "https://github.com/TheRainbowPhoenix/Doodlepad/releases/latest/download/Doodlepad.hh3",
+        "detailsUrl": "https://github.com/TheRainbowPhoenix/Doodlepad",
+        "format": ".hhk",
+        "tags": [
+            "App",
+            "Drawing"
+        ]
+    },
+    {
+        "id": 13,
+        "slug": "minesnail",
+        "name": "CPMineSnail",
+        "author": "SnailMath",
+        "description": "CPMineSnail is a Minesweeper-clone for the calculator Classpad II using the hollyhock-launcher.",
+        "image": "/store/images/cover/MineSnail.png",
+        "screenshots": [
+            "/store/images/minesnail/minesnail1.png",
+            "/store/images/minesnail/minesnail2.png",
+            "/store/images/minesnail/minesnail3.png",
+            "/store/images/minesnail/minesnail4.png",
+            "/store/images/minesnail/minesnail5.png",
+            "/store/images/minesnail/minesnail6.png",
+            "/store/images/minesnail/minesnail7.png"
+        ],
+        "downloadUrl": "https://github.com/TheRainbowPhoenix/CPMineSnail/releases/latest/download/MineSnail.hh3",
+        "detailsUrl": "https://github.com/TheRainbowPhoenix/CPMineSnail",
+        "format": ".hh3",
+        "tags": [
+            "Game",
+            "Puzzle"
+        ]
+    }
+]
