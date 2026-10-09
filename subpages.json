@@ -1,8 +1,7 @@
 {
-  "_note": "Add/remove subpages in the 'subpages' array. type:'static'=copy as-is, type:'build'=run buildCommand first. outputDir=where files are ('.' for repo root). astroBase=inject base path into Astro config for sub-path hosting. branch=git branch to clone.",
+  "_note": "Add/remove subpages in the 'subpages' array. Main site: omit buildCommand for static files, set outputDir='.'. Subpages: type:'static'=copy as-is, type:'build'=run buildCommand first. outputDir=where files are ('.' for repo root). astroBase=inject base path into Astro config for sub-path hosting. branch=git branch to clone.",
   "main": {
-    "buildCommand": "pnpm install && pnpm run build",
-    "outputDir": "dist"
+    "outputDir": "."
   },
   "subpages": [
     {
