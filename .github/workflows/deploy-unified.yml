@@ -1,0 +1,129 @@
+name: Deploy Unified Site
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: write
+  pages: write
+
+env:
+  PAGES_PROJECT_NAME: classpaddev-github-io
+
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout main repo
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+
+      - name: Install pnpm
+        uses: pnpm/action-setup@v4
+        with:
+          version: 9
+
+      - name: Install wrangler
+        run: pnpm add -g wrangler
+
+      # ── Build the main site ──────────────────────────────────────
+      - name: Build main site
+        run: |
+          MAIN_BUILD_CMD=$(jq -r '.main.buildCommand // "pnpm install && pnpm run build"' subpages.json)
+          MAIN_OUTPUT=$(jq -r '.main.outputDir // "dist"' subpages.json)
+
+          echo "▶ Building main site: $MAIN_BUILD_CMD"
+          eval "$MAIN_BUILD_CMD"
+
+          mkdir -p ./unified
+          cp -r ./$MAIN_OUTPUT/. ./unified/
+          echo "✓ Main site → ./unified"
+
+      # ── Clone, build, and integrate each subpage ─────────────────
+      - name: Process subpages
+        run: |
+          COUNT=$(jq '.subpages | length' subpages.json)
+
+          for i in $(seq 0 $((COUNT - 1))); do
+            # Read ALL config values before cd-ing into the sub-repo
+            PATH_URL=$(jq -r ".subpages[$i].path" subpages.json)
+            REPO=$(jq -r ".subpages[$i].repo" subpages.json)
+            BRANCH=$(jq -r ".subpages[$i].branch // \"main\"" subpages.json)
+            TYPE=$(jq -r ".subpages[$i].type" subpages.json)
+            OUTPUT_DIR=$(jq -r ".subpages[$i].outputDir // \"dist\"" subpages.json)
+            BUILD_CMD=$(jq -r ".subpages[$i].buildCommand // \"pnpm install && pnpm run build\"" subpages.json)
+            ASTRO_BASE=$(jq -r ".subpages[$i].astroBase // \"\"" subpages.json)
+
+            # Strip leading slash for directory name
+            DIR_NAME="${PATH_URL#/}"
+
+            echo ""
+            echo "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
+            echo "▶ $PATH_URL  ←  $REPO (branch: $BRANCH)"
+            echo "  type=$TYPE  outputDir=$OUTPUT_DIR"
+            echo "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
+
+            # Clone the sub-repo (shallow, single branch)
+            git clone --depth 1 --branch "$BRANCH" "$REPO" "./sub-$i"
+            cd "./sub-$i"
+
+            # Build if the subpage requires it
+            if [ "$TYPE" = "build" ]; then
+
+              # Inject Astro base path so the site works under a sub-path
+              if [ -n "$ASTRO_BASE" ]; then
+                node -e "
+                  const fs = require('fs');
+                  for (const f of ['astro.config.mjs','astro.config.js','astro.config.ts']) {
+                    if (fs.existsSync(f)) {
+                      let c = fs.readFileSync(f, 'utf8');
+                      if (/base\s*:/.test(c)) {
+                        c = c.replace(/base\s*:\s*['\"].*?['\"]/, 'base: \"$ASTRO_BASE\"');
+                      } else {
+                        c = c.replace(/defineConfig\(\s*\{/, 'defineConfig({\n  base: \"$ASTRO_BASE\",');
+                      }
+                      fs.writeFileSync(f, c);
+                      console.log('  Injected base: $ASTRO_BASE → ' + f);
+                      break;
+                    }
+                  }
+                "
+              fi
+
+              echo "  Build: $BUILD_CMD"
+              eval "$BUILD_CMD"
+            fi
+
+            # Copy output into the unified directory
+            cd "$GITHUB_WORKSPACE"
+            mkdir -p "./unified/$DIR_NAME"
+
+            if [ "$OUTPUT_DIR" = "." ]; then
+              # Static repo — copy everything except .git and node_modules
+              rsync -a --exclude='.git' --exclude='node_modules' "./sub-$i/" "./unified/$DIR_NAME/"
+            else
+              cp -r "./sub-$i/$OUTPUT_DIR/." "./unified/$DIR_NAME/"
+            fi
+
+            echo "✓ $PATH_URL → ./unified/$DIR_NAME"
+          done
+
+          echo ""
+          echo "=== Final unified structure ==="
+          find ./unified -maxdepth 2 -type d | sort
+    
+      - name: Push
+        uses: s0/git-publish-subdir-action@develop
+        env:
+          REPO: self
+          BRANCH: build # The branch name where you want to push the assets
+          FOLDER: unified # The directory where your assets are generated
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }} # GitHub will automatically add this - you don't need to bother getting a token
+          MESSAGE: "Build: ({sha}) {msg}" # The commit message can you createa simple github action that would build static the website with all the subpages ? Maybe make the subpages easy to be added and removed in the build file
+          
