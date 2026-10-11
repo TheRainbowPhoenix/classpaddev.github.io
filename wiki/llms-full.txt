@@ -1177,13 +1177,13 @@ Back in the early V2 days (over 6 years ago), there was no shared compiler — e
 
 [Section titled “What is a .hh3 file?”](#what-is-a-hh3-file)
 
-A `.hh3` file is a **small ELF executable** — the standard executable format used on Linux. If you’re more familiar with Windows, think of it like a `.exe` file, but for your calculator. When you compile your C/C++ code, the compiler produces a `.hh3` file, and the Hollyhock launcher (“**YAL**”) loads it and runs your program.
+A `.hh3` file is a **small ELF executable** : the standard executable format used on Linux. If you’re more familiar with Windows, think of it like a `.exe` file, but for your calculator. When you compile your C/C++ code, the compiler produces a `.hh3` file, and the Hollyhock launcher (“**YAL**”) loads it and runs your program.
 
 ## Can I still use V2?
 
 [Section titled “Can I still use V2?”](#can-i-still-use-v2)
 
-Yes! Switching between V2 and V3 is just a matter of swapping the `run.bin` file at the root of your calculator (V2 apps still work). That said, **V3 is recommended** — it’s actively developed, more flexible, and nearly everything has been ported to it.
+Yes! Switching between V2 and V3 is just a matter of swapping the `run.bin` file at the root of your calculator (V2 apps still work). That said, **V3 is recommended** as it is actively developed, more flexible, and nearly everything has been ported to it.
 
 ## Is my calculator backwards compatible between versions?
 
@@ -1191,11 +1191,28 @@ Yes! Switching between V2 and V3 is just a matter of swapping the `run.bin` file
 
 Mostly, but **don’t expect perfect forward compatibility**. Apps made for one setup generally keep working, but there’s no guarantee that something built today will work on a future OS or firmware version without an update. When in doubt, check the [app store](https://classpaddev.github.io/store/) for the latest version of a program.
 
-## I’m new to programming — where should I start?
+## How do I update back to the official OS?
 
-[Section titled “I’m new to programming — where should I start?”](#im-new-to-programming--where-should-i-start)
+[Section titled “How do I update back to the official OS?”](#how-do-i-update-back-to-the-official-os)
 
-The community recommendation is to **start with Python**, using the calculator’s Python support. It’s forgiving, interactive, and you’ll learn how the calculator works along the way. Once you’re comfortable, moving to **C/C++** is natural — most of what you learned in Python still applies. A great entry point is the [Python app](https://classpaddev.github.io/store/p/python) and the [Python section of this wiki](/wiki/python/introduction/).
+Before exams, we recommend restoring the official Casio OS so your calculator is not modified. Download the official updater from [TI-Planet’s archive](https://tiplanet.org/forum/archives_voir.php?id=5032905) [Mac Version](https://tiplanet.org/forum/archives_voir.php?id=5032910), then put the calculator in normal OS update mode.
+
+On the calculator:
+
+1. Connect the ClassPad to your computer with a standard USB cable.
+2. When the USB menu appears, press `Clear` or choose `5: Cancel`.
+3. Open the `Communication` app.
+4. Open the top menu `Link`.
+5. Choose `OS Update`, then press `OK`.
+6. Leave the calculator alone until the update is complete. The screen will go blank, then the calculator will ask for touch screen alignment and initial setup again.
+
+On the computer, wait 10 to 20 seconds for the USB drivers to install if needed, then click `OK` in the updater to start the official update. The update takes several minutes. Do not unplug the calculator while it is running.
+
+## I’m new to programming : where should I start?
+
+[Section titled “I’m new to programming : where should I start?”](#im-new-to-programming--where-should-i-start)
+
+The community recommendation is to **start with Python**, using the calculator’s Python support. It’s forgiving, interactive, and you’ll learn how the calculator works along the way. Once you’re comfortable, moving to **C/C++** is natural as most of what you learned in Python still applies. A great entry point is the [Python app](https://classpaddev.github.io/store/p/python) and the [Python section of this wiki](/wiki/python/introduction/).
 
 ## What are the ways to make native programs?
 
@@ -22993,13 +23010,158 @@ To change the file name, open the Makefile and adjust this line to what you want
 APP_ELF := $(OUTDIR)/<your_file_name>.elf
 ```
 
+# Install on macOS
+
+> Install HollyHock3 from macOS with Parallels and Windows 11.
+
+This guide explains how to install HollyHock3 from a Mac by running Windows 11 in Parallels.
+
+HollyHock3 installation is still done from Windows. On macOS, Parallels is the easiest supported path because the installer and the calculator update tool can run inside the Windows virtual machine.
+
+> Original PDF guide created by [`creezyz`](https://t.me/creezyz) (`@creezyz` on Discord): [Download the PDF version](/wiki/files/mac-tutorial.pdf).
+
+## Disclaimer
+
+[Section titled “Disclaimer”](#disclaimer)
+
+Caution
+
+* You are modifying your calculator. If something goes wrong, you are responsible for the result.
+* Do not unplug the calculator while the update is running.
+* Do not touch the cable or calculator during the update step.
+* If you are unsure, ask for help on the [ClassPadDev Discord server](https://discord.gg/knpcNJTzpd) before continuing.
+
+## What you need
+
+[Section titled “What you need”](#what-you-need)
+
+* A Mac
+* A ClassPad II calculator
+* A USB cable
+* Parallels Desktop
+* CrystalFetch from the Mac App Store
+* A Windows 11 ISO downloaded with CrystalFetch
+
+## 1. Install Parallels
+
+[Section titled “1. Install Parallels”](#1-install-parallels)
+
+Download the free Parallels trial from [parallels.com/products/desktop/trial](https://www.parallels.com/products/desktop/trial/).
+
+Open the downloaded file and follow the on-screen instructions. macOS may ask you to authenticate with your password.
+
+## 2. Download Windows 11 with CrystalFetch
+
+[Section titled “2. Download Windows 11 with CrystalFetch”](#2-download-windows-11-with-crystalfetch)
+
+Install CrystalFetch from the Mac App Store, then use it to download a Windows 11 ISO.
+
+Save the ISO somewhere easy to find, such as your Desktop.
+
+In CrystalFetch, choose Windows 11 and the right architecture for your Mac.
+
+![Download Windows 11 with CrystalFetch](/wiki/img/install/mac/crystalfetch-download.png)
+
+## 3. Create a Windows 11 virtual machine
+
+[Section titled “3. Create a Windows 11 virtual machine”](#3-create-a-windows-11-virtual-machine)
+
+Open Parallels and choose the option to install from an image file.
+
+![Install Windows from an image file](/wiki/img/install/mac/parallels-image-file.png)
+
+Select the Windows 11 ISO file that CrystalFetch downloaded, then click `Continue`.
+
+![Select the Windows ISO file](/wiki/img/install/mac/select-iso.png)
+
+When Parallels asks which edition to install, choose `Windows 11 Home`.
+
+![Choose Windows 11 Home](/wiki/img/install/mac/windows-home.png)
+
+Continue through the Windows setup. When you reach the login page, create a Windows account.
+
+If Parallels asks for activation, click `Try free for 14 days`.
+
+## 4. Let Windows finish installing
+
+[Section titled “4. Let Windows finish installing”](#4-let-windows-finish-installing)
+
+Launch Windows 11 from Parallels and let the installation finish.
+
+![Windows 11 installing in Parallels](/wiki/img/install/mac/windows-installing.png)
+
+## 5. Run the HollyHock3 installer in Windows
+
+[Section titled “5. Run the HollyHock3 installer in Windows”](#5-run-the-hollyhock3-installer-in-windows)
+
+Inside Windows 11, open Microsoft Edge and go to [classpad.dev](https://classpad.dev).
+
+Follow the Windows installer instructions from the main [Install HollyHock3 MOD](/wiki/hh3/getting-started/install/) page.
+
+When the installer asks you to connect your calculator, plug the calculator into the Mac. Parallels will ask whether the USB device should connect to macOS or Windows 11. Choose `Windows 11`.
+
+![Choose where to connect the USB device](/wiki/img/install/mac/usb-routing.png)
+
+The calculator OS update happens during this step. Do not unplug the calculator and do not touch the cable while the update is running.
+
+## 6. Copy run.bin and your apps
+
+[Section titled “6. Copy run.bin and your apps”](#6-copy-runbin-and-your-apps)
+
+After the update is done, reconnect your calculator and select `USB Mass Storage`.
+
+You can copy files from macOS or from Windows in Parallels:
+
+1. Download `run.bin` from the [first run steps](https://classpaddev.github.io/first-run/#steps).
+2. Copy `run.bin` to the root of your calculator storage.
+3. Copy any `.hh3` programs, games, and Python apps you want to use to the root of the calculator too. You can find apps and games in the [ClassPadDev store](https://classpaddev.github.io/store/), and Python is available on the [Python app page](https://classpaddev.github.io/store/p/python).
+4. Safely eject the calculator.
+
+## 7. Launch your app
+
+[Section titled “7. Launch your app”](#7-launch-your-app)
+
+On the calculator:
+
+1. Go to the ClassPad home screen.
+2. Open `System`.
+3. Open the top left `System` menu.
+4. Choose `Hollyhock Launcher`.
+5. Pick your app and press `Run`.
+
+## Troubleshooting
+
+[Section titled “Troubleshooting”](#troubleshooting)
+
+### Parallels asks where to connect the calculator
+
+[Section titled “Parallels asks where to connect the calculator”](#parallels-asks-where-to-connect-the-calculator)
+
+During installation, choose `Windows 11`. The updater needs to see the calculator from inside the Windows virtual machine.
+
+For normal file copying after installation, you can choose macOS or Windows. The important part is that the calculator is in `USB Mass Storage` mode.
+
+### The installer does not see the calculator
+
+[Section titled “The installer does not see the calculator”](#the-installer-does-not-see-the-calculator)
+
+Unplug the calculator, plug it in again, and make sure Parallels connects it to `Windows 11`.
+
+If you still have trouble, restart Windows in Parallels and try again.
+
+### You need help
+
+[Section titled “You need help”](#you-need-help)
+
+Join the [ClassPadDev Discord server](https://discord.gg/knpcNJTzpd) and explain which step failed.
+
 # Install HollyHock3 MOD
 
 > Install the HollyHock3 mod on your ClassPad.
 
 HollyHock3 is installed as a mod for your ClassPad. The current installer is made for Windows only.
 
-If you use macOS, use Parallels or another Windows virtual machine. If you use Linux, we also recommend using a Windows virtual machine. Wine should work too, but if you run into issues, please [join our Discord server](https://discord.gg/knpcNJTzpd) and tell us what happened.
+If you use macOS, follow the [Install on macOS](/wiki/hh3/getting-started/install-mac/) guide. If you use Linux, we recommend using a Windows virtual machine. Wine should work too, but if you run into issues, please [join our Discord server](https://discord.gg/knpcNJTzpd) and tell us what happened.
 
 ## Disclaimer
 
@@ -23110,7 +23272,7 @@ Then transfer the files to your ClassPad II:
 
 1. Connect your ClassPad II to your computer with USB.
 2. Copy `run.bin` to the root directory of your calculator storage.
-3. Copy any `.hh3` programs, games, and Python apps you want to run to the root directory too.
+3. Copy any `.hh3` programs, games, and Python apps you want to run to the root directory too. You can find apps and games in the [ClassPadDev store](https://classpaddev.github.io/store/), and Python is available on the [Python app page](https://classpaddev.github.io/store/p/python).
 4. Safely eject your calculator from your computer.
 
 ## Launch HollyHock
@@ -23175,12 +23337,6 @@ This section of the wiki is about the HH3 SDK, the successor of the HH2 SDK. It 
 ClassPadDev community
 
 HollyHock3 is a community project, meaning **everyone** plays a part in **making it better**. If you have **questions** or want to be part of the project, **[join our Discord community](https://discord.gg/knpcNJTzpd)**.
-
-## HollyHock-3 (V3)
-
-[Section titled “HollyHock-3 (V3)”](#hollyhock-3-v3)
-
-HollyHock-3 represents the next generation of Classpad development with improved performance, better SDK organization, and enhanced tooling capabilities. While we’re working hard to make everything compatible, you may encounter some differences from V2.
 
 ### V3 Templates
 
